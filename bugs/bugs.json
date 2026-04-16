@@ -1,0 +1,136 @@
+{
+  "bugs": [
+    {
+      "id": 1,
+      "title": "Bug Timezone - Date parsing",
+      "file": "js/supabase.js",
+      "line": 568,
+      "severity": "high",
+      "type": "timezone",
+      "description": "La fonction fmtLocal ajoute 'Z' (UTC) mais utilise l'heure locale",
+      "status": "fixed"
+    },
+    {
+      "id": 2,
+      "title": "Conflict de fonction openModal",
+      "file": "js/admin-rdv.js",
+      "line": 453,
+      "severity": "medium",
+      "type": "conflict",
+      "description": "La fonction window.openModal est écrasée, causant des conflits potentiels",
+      "status": "fixed"
+    },
+    {
+      "id": 3,
+      "title": "Vérification insuffisante de sb.visites",
+      "file": "js/main.js",
+      "line": 462,
+      "severity": "low",
+      "type": "null-safety",
+      "description": "La vérification pourrait être plus robuste",
+      "status": "fixed"
+    },
+    {
+      "id": 4,
+      "title": "Date parsing avec décalage timezone",
+      "file": "js/admin-rdv.js",
+      "line": "154, 182",
+      "severity": "high",
+      "type": "timezone",
+      "description": "L'utilisation de new Date() avec'T12:00:00' peut causer des décalages",
+      "status": "fixed"
+    },
+    {
+      "id": 5,
+      "title": "Erreur de syntaxe HTML (multiple)",
+      "file": "Tous les fichiers .html",
+      "line": "Multiples",
+      "severity": "low",
+      "type": "html",
+      "description": "Il manque > à la fin des balises img logo dans tous les fichiers HTML",
+      "status": "fixed"
+    },
+    {
+      "id": 6,
+      "title": "Check incomplet pour Supabase 2",
+      "file": "js/admin.js",
+      "line": 513,
+      "severity": "medium",
+      "type": "configuration",
+      "description": "Le check pour VOTRE_2EME_URL est fait APRÈS le upload",
+      "status": "fixed"
+    },
+    {
+      "id": 7,
+      "title": "Potential Null Reference",
+      "file": "js/main.js",
+      "line": 260,
+      "severity": "medium",
+      "type": "null-safety",
+      "description": "lightbox vérifié mais pas ses enfants dans certains cas",
+      "status": "fixed"
+    },
+    {
+      "id": 8,
+      "title": "Cache invalidé trop souvent",
+      "file": "js/main.js",
+      "line": 173,
+      "severity": "low",
+      "type": "performance",
+      "description": "Debounce manquant pour le resize event",
+      "status": "fixed"
+    },
+    {
+      "id": 9,
+      "title": "URL Canonicale incorrecte",
+      "file": "rendezvous.html",
+      "line": 22,
+      "severity": "medium",
+      "type": "configuration",
+      "description": "URL canonicale pointe vers Vercel",
+      "status": "not_fixed",
+      "note": "À corriger manuellement selon l'hébergement"
+    },
+    {
+      "id": 10,
+      "title": "Potential XSS dans les templates",
+      "file": "js/admin-rdv.js",
+      "line": "186-187",
+      "severity": "high",
+      "type": "security",
+      "description": "Les attributs comme tel: ne sont pas escape",
+      "status": "fixed"
+    },
+    {
+      "id": 11,
+      "title": "Double inclusion de Chart.js",
+      "file": "admin.html",
+      "line": 23,
+      "severity": "low",
+      "type": "performance",
+      "description": "Chart.js potentiellement inclus deux fois",
+      "status": "not_fixed",
+      "note": "Vérifié - Chart.js n'est inclus qu'une seule fois"
+    },
+    {
+      "id": 12,
+      "title": "Badge display non géré",
+      "file": "js/admin-rdv.js",
+      "line": "31-37",
+      "severity": "low",
+      "type": "ui",
+      "description": "Le badge n'est pas explicitement caché si count = 0",
+      "status": "not_fixed",
+      "note": "Le code actuel fonctionne correctement via style.display inline"
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "fixed": 9,
+    "not_fixed": 3,
+    "high": 3,
+    "medium": 4,
+    "low": 5
+  },
+  "generated": "2026-04-12"
+}

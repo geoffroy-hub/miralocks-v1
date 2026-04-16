@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+
+<head>
+  <meta name="google" content="notranslate">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+  <title>Admin — Institut MiraLocks</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous">
+  <!-- FullCalendar -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <!-- Chart.js (Statistiques) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="css/admin.css?v=c189e9cd">
+  <script>
+    // Injection thématique rapide (anti-flash)
+    var __theme = localStorage.getItem('Miralocks_theme') || 'light';
+    document.documentElement.dataset.theme = __theme;
+  </script>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════ LOGIN ═══════════════════════════ -->
+  <div id="login-page">
+    <div style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10;">
+      <a href="index.html" class="btn-logout"
+        style="display:flex; align-items:center; gap:.5rem; text-decoration:none;">
+        <i class="fas fa-external-link-alt"></i> Voir le site
+      </a>
+    </div>
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="icon">🔐</div>
+        <h1>Institut MiraLocks</h1>
+        <p>Espace Administration</p>
+      </div>
+      <div class="login-field">
+        <label for="login-email">Adresse email</label>
+        <input type="email" id="login-email" placeholder="admin@miralocks.com" autocomplete="email">
+      </div>
+      <div class="login-field">
+        <label for="login-pass">Mot de passe</label>
+        <div class="pass-wrapper">
+          <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="toggle-pass" id="toggle-pass"
+            aria-label="Afficher/Masquer le mot de passe">&#128065;</button>
+        </div>
+      </div>
+      <button class="btn-login" id="login-btn">
+        <span id="login-btn-text">Se connecter</span>
+      </button>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ ADMIN ════════════════════════════ -->
+  <div id="admin-page">
+
+    <!-- Header -->
+    
+<header class="admin-header">
+  <meta name="google" content="notranslate">
+
+      <div class="admin-header-left">
+        <div class="admin-header-logo"><img src="assets/admin-logo.jpg" alt="Logo"></div>
+        <div>
+          <div class="admin-title">✦ MiraLocks Admin</div>
+          <div class="admin-subtitle" id="admin-email-display"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.75rem;align-items:center">
+        <button id="pwa-install-btn" class="btn-logout" style="display:none; padding:.4rem .6rem; border:1px solid var(--or); color:var(--or)" aria-label="Installer l'application">
+          <i class="fas fa-download"></i> <span style="font-size:.8rem; margin-left:.25rem">Installer App</span>
+        </button>
+        <button id="theme-toggle" class="btn-logout" aria-label="Changer le thème" style="padding:.4rem .6rem">
+          <i class="fas fa-moon"></i>
+        </button>
+        <span style="width:1px;height:20px;background:rgba(255,255,255,.2);margin:0 .25rem"></span>
+        <a href="index.html" class="btn-logout"><i class="fas fa-home"></i> Voir le site</a>
+        <button class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        <!-- Bouton hamburger intégré dans la topbar (mobile uniquement) -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Menu" aria-expanded="false" style="display:none">
+          <span></span><span></span><span></span>
+          <span class="hamburger-badge" id="hamburger-badge"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-body">
+
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <div class="sidebar-section">Tableau de bord</div>
+        <div class="nav-item active" data-panel="dashboard"><i class="fas fa-chart-pie"></i> Vue d'ensemble</div>
+        <div class="nav-item" data-panel="google-analytics"><i class="fas fa-chart-line" style="color:#4285F4"></i> Stats Google</div>
+
+        <div class="sidebar-section" style="margin-top:.75rem">Contenu</div>
+        <div class="nav-item" data-panel="blog"><i class="fas fa-newspaper"></i> Articles Blog</div>
+        <div class="nav-item" data-panel="galerie"><i class="fas fa-images"></i> Galerie Photos</div>
+        <div class="nav-item" data-panel="videos"><i class="fas fa-video"></i> Vidéos</div>
+        <div class="nav-item" data-panel="boutique-admin"><i class="fas fa-shopping-bag"></i> Boutique</div>
+        <div class="nav-item" data-panel="avis">
+          <i class="fas fa-star"></i> Avis Clients
+          <span class="nav-badge" id="avis-badge" style="display:none">0</span>
+        </div>
+        <div class="nav-item" data-panel="rdv-planning"><i class="fas fa-calendar-alt"></i> Planning</div>
+        <div class="nav-item" data-panel="rendezvous">
+          <i class="fas fa-calendar-check"></i> Rendez-vous
+          <span class="nav-badge" id="rdv-badge" style="display:none">0</span>
+        </div>
+
+        <div class="nav-item" data-panel="services-admin"><i class="fas fa-cut"></i> Prestations</div>
+        <div class="sidebar-section" style="margin-top:.75rem">Monétisation</div>
+        <div class="nav-item" data-panel="bons-cadeaux"><i class="fas fa-gift"></i> Bons cadeaux</div>
+        <div class="nav-item" data-panel="packs-seances"><i class="fas fa-box"></i> Packs séances</div>
+        <div class="nav-item" data-panel="parrainage"><i class="fas fa-users"></i> Parrainage</div>
+        <div class="sidebar-section" style="margin-top:.75rem">Outils IA</div>
+        <div class="nav-item" data-panel="assistant-ia"><i class="fas fa-robot"></i> Assistant Admin</div>
+        <div class="nav-item" data-panel="chatbot-public-config" style="background:linear-gradient(90deg,rgba(16,185,129,.1),transparent)"><i class="fas fa-comment-dots" style="color:#10b981"></i> Chatbot Public</div>
+        <div class="sidebar-section" style="margin-top:.75rem">Configuration</div>
+        <div class="nav-item" data-panel="historique"><i class="fas fa-history"></i> Historique</div>
+        <div class="nav-item" data-panel="parametres"><i class="fas fa-cog"></i> Paramètres</div>
+      </nav>
+
+      <!-- Main -->
+      <main class="admin-main">
+
+        <!-- ── DASHBOARD ───────────────────────────────── -->
+        <div class="panel active" id="panel-dashboard">
+          <div class="panel-header">
+            <h1 class="panel-title">Vue d'ensemble</h1>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn btn-outline" onclick="loadDashboard()"><i class="fas fa-sync"></i> Actualiser</button>
+              <button class="btn btn-or" onclick="printDailyAgenda()"><i class="fas fa-print"></i> Agenda du jour</button>
+            </div>
+          </div>
+
+          <!-- Rendez-vous du Jour (Widget Dynamique) -->
+          <div id="dash-today" style="margin-bottom:2rem"></div>
+
+          <div class="dash-grid" id="dash-grid">
+            <div class="loading">
+              <div class="spinner"></div> Chargement…
+            </div>
+          </div>
+          <div id="dash-pending" style="margin-top:1.5rem"></div>
+
+          <!-- Widget Services les plus demandés (#12) -->
+          <div id="dash-service-stats" style="background:var(--bg-card,#fff);border-radius:var(--rayon-lg,16px);padding:1.25rem 1.5rem;border:1px solid var(--border,#e5e7eb);margin-top:1.5rem"></div>
+
+          <!-- Visites du site (Supabase) -->
+          <div class="dash-card" style="padding:1.5rem;cursor:default;margin-top:2rem">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+              <h3 style="margin:0;font-size:1rem;color:var(--vert);display:flex;align-items:center;gap:.5rem">
+                <i class="fas fa-chart-area"></i> Fréquentation du site
+              </h3>
+              <button class="btn btn-sm btn-outline" onclick="showPanel('google-analytics')" style="font-size:11px">
+                <i class="fas fa-expand"></i> Voir tout
+              </button>
+            </div>
+            <!-- Mini KPI -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem" id="dash-visites-kpi">
+              <div style="background:var(--bg-card,#f8f8f8);border-radius:8px;padding:.75rem;text-align:center">
+                <div style="font-size:1.5rem;font-weight:700;color:var(--vert)" id="dv-aujourd-hui">—</div>
+                <div style="font-size:.7rem;color:#888">Aujourd'hui</div>
+              </div>
+              <div style="background:var(--bg-card,#f8f8f8);border-radius:8px;padding:.75rem;text-align:center">
+                <div style="font-size:1.5rem;font-weight:700;color:var(--or)" id="dv-semaine">—</div>
+                <div style="font-size:.7rem;color:#888">Cette semaine</div>
+              </div>
+              <div style="background:var(--bg-card,#f8f8f8);border-radius:8px;padding:.75rem;text-align:center">
+                <div style="font-size:1.5rem;font-weight:700;color:#4a90d9" id="dv-mois">—</div>
+                <div style="font-size:.7rem;color:#888">Ce mois</div>
+              </div>
+              <div style="background:var(--bg-card,#f8f8f8);border-radius:8px;padding:.75rem;text-align:center">
+                <div style="font-size:1.5rem;font-weight:700;color:#9b59b6" id="dv-total">—</div>
+                <div style="font-size:.7rem;color:#888">Total</div>
+              </div>
+            </div>
+            <!-- Mini graphique -->
+            <div style="position:relative;height:160px"><canvas id="dashVisitesChart"></canvas></div>
+          </div>
+
+          <!-- Graphique RDV par semaine -->
+          <div class="dash-card" style="padding:1.5rem;cursor:default;margin-top:2rem">
+            <div
+              style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+              <h3 style="margin:0;font-size:1rem;color:var(--vert);display:flex;align-items:center;gap:.5rem">
+                <i class="fas fa-chart-line"></i> Rendez-vous par semaine
+              </h3>
+              <div style="display:flex;gap:.5rem">
+                <button class="btn btn-sm btn-outline" id="btn-week-4" onclick="setWeekRange(4)"
+                  style="font-size:11px">4 sem.</button>
+                <button class="btn btn-sm" id="btn-week-8" onclick="setWeekRange(8)"
+                  style="font-size:11px;background:var(--vert);color:#fff">8 sem.</button>
+                <button class="btn btn-sm btn-outline" id="btn-week-12" onclick="setWeekRange(12)"
+                  style="font-size:11px">12 sem.</button>
+              </div>
+            </div>
+            <div style="position:relative;height:200px"><canvas id="rdvWeekChart"></canvas></div>
+          </div>
+          <div class="dash-grid dash-grid-stats"
+            style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:1rem;gap:1rem">
+            <div class="dash-card" style="padding:1.25rem;cursor:default;min-height:300px">
+              <h3 style="margin-bottom:1rem;font-size:1rem;color:var(--vert);display:flex;align-items:center;gap:.5rem">
+                <i class="fas fa-chart-bar"></i> État des Rendez-vous
+              </h3>
+              <div style="position:relative;height:220px"><canvas id="rdvStatChart"></canvas></div>
+            </div>
+            <div class="dash-card" style="padding:1.25rem;cursor:default;min-height:300px">
+              <h3 style="margin-bottom:1rem;font-size:1rem;color:var(--vert);display:flex;align-items:center;gap:.5rem">
+                <i class="fas fa-trophy"></i> Services les plus demandés
+              </h3>
+              <div style="position:relative;height:220px"><canvas id="rdvServiceChart"></canvas></div>
+            </div>
+          </div>
+          <div class="dash-grid"
+            style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:1rem;gap:1rem" id="dash-kpi">
+          </div>
+        </div>
+
+        <!-- ── GOOGLE ANALYTICS ───────────────────────────── -->
+        <div class="panel" id="panel-google-analytics">
+          <div class="panel-header">
+            <h1 class="panel-title">Statistiques de Fréquentation <span>Données en temps réel</span></h1>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn btn-outline btn-sm" onclick="loadVisitesPanel()">
+                <i class="fas fa-sync"></i> Actualiser
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Cards -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem" id="visites-kpi">
+            <div class="dash-card" style="padding:1.25rem;cursor:default;text-align:center">
+              <div style="font-size:2rem;font-weight:700;color:var(--vert)" id="v-aujourd-hui">—</div>
+              <div style="font-size:.8rem;color:#888;margin-top:.25rem"><i class="fas fa-calendar-day"></i> Aujourd'hui</div>
+            </div>
+            <div class="dash-card" style="padding:1.25rem;cursor:default;text-align:center">
+              <div style="font-size:2rem;font-weight:700;color:var(--or)" id="v-semaine">—</div>
+              <div style="font-size:.8rem;color:#888;margin-top:.25rem"><i class="fas fa-calendar-week"></i> Cette semaine</div>
+            </div>
+            <div class="dash-card" style="padding:1.25rem;cursor:default;text-align:center">
+              <div style="font-size:2rem;font-weight:700;color:#4a90d9" id="v-mois">—</div>
+              <div style="font-size:.8rem;color:#888;margin-top:.25rem"><i class="fas fa-calendar-alt"></i> Ce mois</div>
+            </div>
+            <div class="dash-card" style="padding:1.25rem;cursor:default;text-align:center">
+              <div style="font-size:2rem;font-weight:700;color:#9b59b6" id="v-total">—</div>
+              <div style="font-size:.8rem;color:#888;margin-top:.25rem"><i class="fas fa-infinity"></i> Total</div>
+            </div>
+          </div>
+
+          <!-- Graphique visites par jour -->
+          <div class="dash-card" style="padding:1.5rem;cursor:default;margin-bottom:1.5rem">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+              <h3 style="margin:0;font-size:1rem;color:var(--vert);display:flex;align-items:center;gap:.5rem">
+                <i class="fas fa-chart-area"></i> Visites par jour
+              </h3>
+              <div style="display:flex;gap:.5rem">
+                <button class="btn btn-sm btn-outline" id="vbtn-7" onclick="changeVisitesDays(7)" style="font-size:11px">7 jours</button>
+                <button class="btn btn-sm" id="vbtn-30" onclick="changeVisitesDays(30)" style="font-size:11px;background:var(--vert);color:#fff">30 jours</button>
+                <button class="btn btn-sm btn-outline" id="vbtn-90" onclick="changeVisitesDays(90)" style="font-size:11px">90 jours</button>
+              </div>
+            </div>
+            <div style="position:relative;height:240px"><canvas id="visitesLineChart"></canvas></div>
+          </div>
+
+          <!-- Top pages du mois -->
+          <div class="dash-card" style="padding:1.5rem;cursor:default">
+            <h3 style="margin:0 0 1rem 0;font-size:1rem;color:var(--vert);display:flex;align-items:center;gap:.5rem">
+              <i class="fas fa-fire"></i> Pages les plus visitées (ce mois)
+            </h3>
+            <div id="visites-top-pages">
+              <div class="loading"><div class="spinner"></div> Chargement…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── BLOG ───────────────────────────────────── -->
+        <div class="panel" id="panel-blog">
+          <div class="panel-header">
+            <h1 class="panel-title">Articles Blog <span id="blog-count"></span></h1>
+            <button class="btn btn-primary" onclick="openModal_Blog_new()"><i class="fas fa-plus"></i> Nouvel
+              article</button>
+          </div>
+          <div id="blog-list">
+            <div class="loading">
+              <div class="spinner"></div> Chargement…
+            </div>
+          </div>
+        </div>
+
+        <!-- ── GALERIE ────────────────────────────────── -->
+        <div class="panel" id="panel-galerie">
+          <div class="panel-header">
+            <h1 class="panel-title">Galerie Photos <span id="galerie-count"></span></h1>
+            <button class="btn btn-primary" onclick="openModal('galerie')"><i class="fas fa-plus"></i> Ajouter
+              photo</button>
+          </div>
+          <div id="galerie-list">
+            <div class="loading">
+              <div class="spinner"></div> Chargement…
+            </div>
+          </div>
+        </div>
+
+        <!-- ── VIDÉOS ─────────────────────────────────── -->
+        <div class="panel" id="panel-videos">
+          <div class="panel-header">
+            <h1 class="panel-title">Vidéos <span id="videos-count"></span></h1>
+            <button class="btn btn-primary" onclick="openModal_Video_new()"><i class="fas fa-plus"></i> Ajouter
+              vidéo</button>
+          </div>
+          <div id="videos-list">
+            <div class="loading">
+              <div class="spinner"></div> Chargement…
+            </div>
+          </div>
+        </div>
+
+        <!-- ── AVIS ───────────────────────────────────── -->
+        <div class="panel" id="panel-avis">
+          <div class="panel-header">
+            <h1 class="panel-title">Avis Clients <span id="avis-count"></span></h1>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <button class="btn btn-outline btn-sm" onclick="loadAvis(false)"><i class="fas fa-clock"></i> En
+                attente</button>
+              <button class="btn btn-outline btn-sm" onclick="loadAvis(true)"><i class="fas fa-check"></i>
+                Approuvés</button>
+              <button class="btn btn-primary" onclick="openModal('avis')"><i class="fas fa-plus"></i> Ajouter un
+                avis</button>
+            </div>
+          </div>
+          <div id="avis-list">
+            <div class="loading">
+              <div class="spinner"></div> Chargement…
+            </div>
+          </div>
+        </div>
+
+        <!-- ── RENDEZ-VOUS ───────────────────────────── -->
+        <div class="panel" id="panel-rendezvous">
+          <div class="panel-header">
+            <h1 class="panel-title">Rendez-vous <span id="rdv-count"></span></h1>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <button class="btn btn-outline btn-sm" onclick="exportRdvCSV()" style="margin-right:.5rem"><i
+                  class="fas fa-file-export"></i> Exporter</button>
+              <button class="btn btn-outline btn-sm" onclick="loadRdv('en_attente')" id="btn-rdv-attente">
+                <i class="fas fa-clock"></i> En attente
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="loadRdv('confirme')" id="btn-rdv-confirme">
+                <i class="fas fa-check"></i> Confirmés
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="loadRdv('termine')" id="btn-rdv-termine">
+                <i class="fas fa-flag-checkered"></i> Terminés
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="loadRdv('annule')" id="btn-rdv-annule">
+                <i class="fas fa-times"></i> Annulés
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="loadRdv(null)" id="btn-rdv-all">
+                <i class="fas fa-list"></i> Tous
+              </button>
+            </div>
+          </div>
+          <div id="rdv-list">
+            <div class="loading">
+              <div class="spinner"></div> Chargement…
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SERVICES ────────────────────────────────────── -->
+        <!-- ── BOUTIQUE ADMIN ─────────────────────────────── -->
+        <div class="panel" id="panel-boutique-admin">
+          <div class="panel-header">
+            <h1 class="panel-title">Gestion Boutique</h1>
+            <button class="btn btn-or" onclick="BoutiqueAdmin.openAddModal()">
+              <i class="fas fa-plus"></i> Nouvel Article
+            </button>
+          </div>
+          
+          <div class="dash-grid" style="margin-bottom:2rem">
+            <div class="dash-card">
+              <div class="dash-card-val" id="shop-total-articles">0</div>
+              <div class="dash-card-label">Articles en vente</div>
+            </div>
+            <div class="dash-card">
+              <div class="dash-card-val" id="shop-min-order-display">10 000 F</div>
+              <div class="dash-card-label">Minimum commande</div>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:60px">Image</th>
+                  <th>Article</th>
+                  <th>Prix</th>
+                  <th>Statut</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="shop-articles-list">
+                <tr><td colspan="5" class="text-center">Chargement des articles...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-services-admin">
+          <div class="panel-header">
+            <h1 class="panel-title">Prestations & Tarifs <span>Configurez vos services</span></h1>
+            <button class="btn btn-primary" onclick="openModal_Service_new()"><i class="fas fa-plus"></i> Nouveau
+              service</button>
+          </div>
+          <div id="services-admin-list">
+            <div class="loading">
+              <div class="spinner"></div> Chargement…
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PLANNING ────────────────────────────────────── -->
+        <div class="panel" id="panel-rdv-planning">
+          <!-- Planning hebdomadaire visuel -->
+          <div id="planning-weekly" style="margin-bottom:1.5rem"></div>
+          <div class="panel-header">
+            <h1 class="panel-title">Planning des Rendez-vous <span>Vue calendrier globale</span></h1>
+            <button class="btn btn-outline" onclick="loadPlanning()"><i class="fas fa-sync"></i> Actualiser</button>
+          </div>
+          <div id="calendar" style="margin-top:1rem"></div>
+        </div>
+
+        <!-- ── PARAMÈTRES ─────────────────────────────── -->
+        <div class="panel" id="panel-parametres">
+          <div class="panel-header">
+            <h1 class="panel-title">Paramètres <span>Configuration des cartes</span></h1>
+          </div>
+
+          <!-- ── SÉCURITÉ & 2FA ──────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#1e3a5f 0%,#0C3320 100%)">
+              <div class="param-card-icon">🔐</div>
+              <div>
+                <h3 style="color:var(--or);font-size:1rem;margin:0">Sécurité avancée</h3>
+                <p style="color:rgba(255,255,255,.65);font-size:.8rem;margin:0">Authentification 2 facteurs et alertes</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div id="section-2fa">
+                <div class="loading"><div class="spinner"></div> Chargement…</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── NEWSLETTER ─────────────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#3b82f6 0%,#1d4ed8 100%)">
+              <div class="param-card-icon">📧</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Newsletter</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Abonnés et campagnes email</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div id="section-newsletter">
+                <div class="loading"><div class="spinner"></div> Chargement…</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── FERMETURES & CONGÉS ──────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#ef4444 0%,#b91c1c 100%)">
+              <div class="param-card-icon">📅</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Congés & Fermetures</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Bloquer des dates dans le calendrier</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div id="section-fermetures">
+                <div class="loading"><div class="spinner"></div> Chargement…</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── MODE MAINTENANCE ──────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%)">
+              <div class="param-card-icon">🔧</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Mode Maintenance</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Afficher une page d'attente aux visiteurs</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+              <p style="margin:0;font-size:.85rem;color:var(--gris-d)">Active une page de maintenance sur le site public. L'admin reste accessible.</p>
+              <button id="maintenance-toggle-btn" class="btn btn-sm" onclick="Maintenance.toggle()" style="background:#f59e0b;color:#fff;border:none">
+                <i class="fas fa-tools"></i> Mode maintenance
+              </button>
+            </div>
+          </div>
+
+          <!-- ── IMPORT CSV RDV ──────────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%)">
+              <div class="param-card-icon">📥</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Import CSV</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Importer des rendez-vous depuis un fichier CSV</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+              <div style="font-size:.85rem;color:var(--gris-d)">
+                <p style="margin:0 0 .35rem">Format CSV requis : <code style="font-size:.8rem;background:var(--bg,#f4f4f4);padding:1px 6px;border-radius:4px">nom, tel, service, date_rdv, heure, email, message</code></p>
+                <p style="margin:0">La première ligne doit contenir les en-têtes.</p>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="importRdvCSV()">
+                <i class="fas fa-file-csv"></i> Importer CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- ── DIAGNOSTIC SYSTÈME ──────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#059669 0%,#047857 100%)">
+              <div class="param-card-icon">🩺</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Diagnostic système</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Tester toutes les connexions et tables Supabase</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+              <p style="margin:0;font-size:.85rem;color:var(--gris-d)">Vérifie la connexion aux deux instances Supabase, l'accès à toutes les tables et au Storage.</p>
+              <button class="btn btn-sm btn-outline" onclick="showHealthCheck()">
+                <i class="fas fa-stethoscope"></i> Lancer le diagnostic
+              </button>
+            </div>
+          </div>
+
+          <!-- ── SITEMAP DYNAMIQUE ──────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%)">
+              <div class="param-card-icon">🗺️</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Sitemap dynamique</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Générer un sitemap.xml incluant les articles de blog</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+              <p style="margin:0;font-size:.85rem;color:var(--gris-d)">Génère un sitemap.xml à jour avec toutes les pages et articles publiés. À télécharger et remplacer dans votre hébergement.</p>
+              <button class="btn btn-sm btn-outline" onclick="generateDynamicSitemap()">
+                <i class="fas fa-sitemap"></i> Générer sitemap.xml
+              </button>
+            </div>
+          </div>
+
+          <!-- ── SMS AFRICA'S TALKING ──────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%)">
+              <div class="param-card-icon">📱</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">SMS Africa's Talking</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Confirmations par SMS en plus de WhatsApp</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+                <div>
+                  <label style="display:block;font-size:.82rem;font-weight:600;margin-bottom:.35rem">Clé API</label>
+                  <input type="password" id="at-apikey" placeholder="atsk_…" style="width:100%;border:1px solid var(--border,#e5e7eb);border-radius:8px;padding:.5rem .75rem;font-size:.85rem">
+                </div>
+                <div>
+                  <label style="display:block;font-size:.82rem;font-weight:600;margin-bottom:.35rem">Username</label>
+                  <input type="text" id="at-username" placeholder="sandbox ou votre username" style="width:100%;border:1px solid var(--border,#e5e7eb);border-radius:8px;padding:.5rem .75rem;font-size:.85rem">
+                </div>
+              </div>
+              <button class="btn btn-sm" style="background:var(--vert,#0C3320);color:var(--or,#C9A84C)" onclick="
+                const k=document.getElementById('at-apikey').value;
+                const u=document.getElementById('at-username').value;
+                if(!k||!u){window.toast?.('Remplissez les deux champs','error');return;}
+                Promise.all([sb.settings.set('africastalking_apikey',k),sb.settings.set('africastalking_username',u)])
+                  .then(()=>window.toast?.('Config SMS sauvegardée !','success'))
+                  .catch(e=>window.toast?.(e.message,'error'));
+              "><i class="fas fa-save"></i> Enregistrer</button>
+            </div>
+          </div>
+
+          <!-- ── SAUVEGARDE JSON ───────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#6b7280 0%,#374151 100%)">
+              <div class="param-card-icon">💾</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Sauvegarde des données</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Export complet en JSON</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+              <p style="margin:0;font-size:.85rem;color:var(--gris-d)">Téléchargez toutes vos données (RDV, avis, services, blog…) en un fichier JSON. Les clés API sensibles sont exclues.</p>
+              <button class="btn btn-sm btn-outline" onclick="exportBackupJSON()">
+                <i class="fas fa-download"></i> Télécharger la sauvegarde
+              </button>
+            </div>
+          </div>
+
+          <!-- ── NOTIFICATIONS PUSH ────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%)">
+              <div class="param-card-icon">🔔</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Notifications Push</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Envoyer des alertes aux visiteurs</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+              <p style="margin:0;font-size:.85rem;color:var(--gris-d)">Envoyez une notification push aux visiteurs qui ont accepté les alertes (PWA installée ou onglet ouvert).</p>
+              <button class="btn btn-sm btn-outline" onclick="PushNotif.openAdminModal()">
+                <i class="fas fa-bell"></i> Envoyer une notification
+              </button>
+            </div>
+          </div>
+
+          <!-- ── CODES PROMO ──────────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#C9A84C 0%,#a07830 100%)">
+              <div class="param-card-icon">🎟️</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Codes promotionnels</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Gérer les réductions et offres spéciales</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div id="section-promos">
+                <div class="loading"><div class="spinner"></div> Chargement…</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CARTE PAR DÉFAUT ──────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,var(--vert) 0%,var(--vert-c) 100%)">
+              <div class="param-card-icon">🗺️</div>
+              <div>
+                <h3 style="color:var(--or);font-size:1rem;margin:0">Carte affichée par défaut</h3>
+                <p style="color:rgba(255,255,255,.65);font-size:.8rem;margin:0">Choisissez quelle carte s'affiche en
+                  premier sur la page Contact</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div id="default-map-status" style="margin-bottom:1rem">
+                <div class="loading">
+                  <div class="spinner"></div> Chargement…
+                </div>
+              </div>
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+                <button class="btn btn-outline" id="btn-default-google" onclick="setDefaultMap('google')">
+                  <i class="fab fa-google" style="color:#4285F4"></i> Google Maps par défaut
+                </button>
+                <button class="btn btn-outline" id="btn-default-apple" onclick="setDefaultMap('apple')">
+                  <i class="fab fa-apple" style="color:#1c1c1e"></i> Apple Maps par défaut
+                </button>
+              </div>
+              <p style="font-size:.78rem;color:var(--gris-d);margin-top:.75rem">
+                <i class="fas fa-info-circle"></i>
+                Le visiteur peut toujours basculer manuellement entre les deux cartes. Ce réglage définit seulement
+                quelle carte s'affiche à l'ouverture de la page.
+              </p>
+            </div>
+          </div>
+
+          <!-- ── CONFIGURATION BOUTIQUE ───────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%)">
+              <div class="param-card-icon">🛍️</div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Configuration Boutique</h3>
+                <p style="color:rgba(255,255,255,.75);font-size:.8rem;margin:0">Réglages des ventes et livraisons</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div class="form-row">
+                <div class="form-group" style="flex:1">
+                  <label class="form-label">Minimum de commande (FCFA)</label>
+                  <input type="number" id="shop-min-order" class="form-control" placeholder="Ex: 10000" value="10000">
+                </div>
+                <div class="form-group" style="flex:1">
+                  <label class="form-label">Frais de livraison (FCFA)</label>
+                  <input type="number" id="shop-delivery-fee" class="form-control" placeholder="Ex: 1500" value="1500">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mode de paiement actif</label>
+                <select id="shop-payment-mode" class="form-control">
+                  <option value="whatsapp">Uniquement WhatsApp (Paiement à la livraison)</option>
+                  <option value="cinetpay">CinetPay (Paiement Mobile Money / Carte)</option>
+                </select>
+              </div>
+              <div style="margin-top:1rem">
+                <button class="btn btn-vert" onclick="BoutiqueAdmin.saveSettings()" id="shop-save-settings-btn">
+                  <i class="fas fa-save"></i> Enregistrer les réglages
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ── IFRAME GOOGLE PERSONNALISÉ ───────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#0f9d58 0%,#34a853 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-map-marked-alt" style="color:#fff;font-size:1.3rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Iframe Google Maps personnalisé</h3>
+                <p style="color:rgba(255,255,255,.7);font-size:.8rem;margin:0">Collez directement une URL d'embed depuis
+                  Google Maps</p>
+              </div>
+              <div style="margin-left:auto">
+                <span id="custom-iframe-badge" class="badge badge-warning">Non configuré</span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+
+              <!-- Info -->
+              <div
+                style="display:flex;align-items:flex-start;gap:.6rem;padding:.75rem 1rem;background:rgba(52,168,83,.08);border:1px solid rgba(52,168,83,.25);border-radius:8px;margin-bottom:1.25rem">
+                <i class="fas fa-info-circle" style="color:#0f9d58;margin-top:.15rem"></i>
+                <div style="font-size:.84rem;color:#444">
+                  <strong>Comment obtenir l'URL d'embed ?</strong><br>
+                  Sur Google Maps → cliquez sur votre lieu → <strong>Partager</strong> → <strong>Intégrer une
+                    carte</strong> → copiez <em>uniquement l'URL</em> du champ <code>src="…"</code>.
+                </div>
+              </div>
+
+              <!-- Aperçu -->
+              <div id="custom-iframe-preview" style="display:none;margin-bottom:1.25rem">
+                <p style="font-size:.85rem;color:var(--gris-d);margin-bottom:.6rem"><i class="fas fa-eye"></i> Aperçu en
+                  direct :</p>
+                <div style="border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12)">
+                  <iframe id="custom-iframe-el" style="width:100%;height:220px;border:none;display:block" loading="lazy"
+                    title="Aperçu iframe personnalisé" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>
+                  </iframe>
+                </div>
+              </div>
+
+              <!-- Champ URL -->
+              <div class="form-group">
+                <label class="form-label" for="custom-iframe-url">
+                  URL de l'iframe Google Maps
+                </label>
+                <div style="display:flex;gap:.75rem;align-items:flex-start;flex-wrap:wrap">
+                  <div style="flex:1;min-width:200px">
+                    <input type="url" id="custom-iframe-url" class="form-control"
+                      placeholder="https://www.google.com/maps/embed?pb=…" autocomplete="off" spellcheck="false">
+                  </div>
+                  <button class="btn" onclick="saveCustomIframe()" id="custom-iframe-save-btn"
+                    style="background:#0f9d58;color:#fff;white-space:nowrap">
+                    <i class="fas fa-save"></i> Enregistrer
+                  </button>
+                </div>
+                <p style="font-size:.78rem;color:var(--gris-d);margin-top:.5rem">
+                  <i class="fas fa-info-circle"></i>
+                  Si une URL est enregistrée ici, elle sera utilisée à la place de la clé API Google Maps.
+                </p>
+              </div>
+
+              <!-- Supprimer -->
+              <div id="custom-iframe-remove-zone"
+                style="display:none;margin-top:1rem;padding:.85rem 1rem;background:#FEF2F2;border-radius:8px;border-left:3px solid var(--danger)">
+                <p style="font-size:.84rem;color:#7f1d1d;margin:0 0 .6rem">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  Supprimer l'URL reviendra à utiliser la clé API (ou OpenStreetMap).
+                </p>
+                <button class="btn btn-danger btn-sm" onclick="removeCustomIframe()">
+                  <i class="fas fa-trash"></i> Supprimer l'iframe personnalisé
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── APPLE MAPS ─────────────────────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#1c1c1e 0%,#3a3a3c 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.1)">
+                <i class="fab fa-apple" style="color:#fff;font-size:1.3rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Apple Maps</h3>
+                <p style="color:rgba(255,255,255,.6);font-size:.8rem;margin:0">Carte Apple intégrée — fonctionne sans
+                  clé API</p>
+              </div>
+              <div style="margin-left:auto">
+                <span class="badge"
+                  style="background:rgba(52,199,89,.2);color:#34c759;border:1px solid rgba(52,199,89,.3)">
+                  <i class="fas fa-check"></i> Actif
+                </span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+
+              <!-- Statut -->
+              <div
+                style="display:flex;align-items:center;gap:.6rem;padding:.75rem 1rem;background:rgba(52,199,89,.08);border:1px solid rgba(52,199,89,.2);border-radius:8px;margin-bottom:1.25rem">
+                <i class="fab fa-apple" style="color:#1c1c1e;font-size:1.1rem"></i>
+                <div>
+                  <strong style="color:#1c1c1e;font-size:.9rem">Apple Maps est toujours disponible</strong>
+                  <p style="color:#555;font-size:.8rem;margin:.1rem 0 0">Aucune configuration requise. Le bouton Apple
+                    Maps est toujours visible sur la page Contact.</p>
+                </div>
+              </div>
+
+              <!-- Aperçu Apple Maps -->
+              <p style="font-size:.85rem;color:var(--gris-d);margin-bottom:.6rem"><i class="fas fa-eye"></i> Aperçu
+                Apple Maps :</p>
+              <div
+                style="border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);margin-bottom:1.25rem">
+                <iframe style="width:100%;height:220px;border:none;display:block"
+                  src="https://maps.apple.com/?q=6.224345,1.193420&z=16&t=m&output=embed" loading="lazy"
+                  title="Aperçu Apple Maps" sandbox="allow-scripts allow-same-origin allow-popups">
+                </iframe>
+              </div>
+
+              <!-- Lien direct -->
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center">
+                <a href="https://maps.apple.com/?q=6.224345,1.193420&z=16" target="_blank" rel="noopener"
+                  class="btn btn-outline" style="border-color:#1c1c1e;color:#1c1c1e">
+                  <i class="fab fa-apple"></i> Ouvrir Apple Maps
+                </a>
+                <p style="font-size:.8rem;color:var(--gris-d);margin:0">
+                  <i class="fas fa-info-circle"></i>
+                  L'embed Apple Maps est optimisé pour Safari et iOS. Sur Android/Chrome, un lien de secours s'affiche
+                  automatiquement.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CONFIGURATION CINETPAY (PAIEMENT) ────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#e11d48 0%,#be123c 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-credit-card" style="color:#fff;font-size:1.2rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Configuration CinetPay</h3>
+                <p style="color:rgba(255,255,255,.7);font-size:.8rem;margin:0">Paramétrez vos identifiants pour les paiements d'acompte</p>
+              </div>
+              <div style="margin-left:auto">
+                <span id="cinetpay-badge" class="badge badge-warning">Non configuré</span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div style="display:flex;align-items:flex-start;gap:.6rem;padding:.75rem 1rem;background:rgba(225,29,72,.05);border:1px solid rgba(225,29,72,.2);border-radius:8px;margin-bottom:1.25rem">
+                <i class="fas fa-shield-alt" style="color:#e11d48;margin-top:.15rem"></i>
+                <div style="font-size:.84rem;color:#444">
+                  <strong>Identifiants requis :</strong><br>
+                  Récupérez votre <strong>API Key</strong> et <strong>Site ID</strong> depuis votre back-office CinetPay.
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group" style="flex:2">
+                  <label class="form-label">CinetPay API Key</label>
+                  <input type="password" id="cinetpay-apikey" class="form-control" placeholder="Entrez votre API Key">
+                </div>
+                <div class="form-group" style="flex:1">
+                  <label class="form-label">Site ID</label>
+                  <input type="text" id="cinetpay-siteid" class="form-control" placeholder="Ex: 584xxx">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Mode d'exécution</label>
+                <select id="cinetpay-mode" class="form-control">
+                  <option value="TEST">TEST (Simulation sans argent réel)</option>
+                  <option value="PRODUCTION">PRODUCTION (Paiements réels activés)</option>
+                </select>
+              </div>
+
+              <div style="margin-top:1.25rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+                <button class="btn" onclick="saveCinetPaySettings()" id="cinetpay-save-btn" style="background:#e11d48;color:#fff">
+                  <i class="fas fa-save"></i> Enregistrer la configuration
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="removeCinetPaySettings()" id="cinetpay-remove-btn" style="display:none">
+                   <i class="fas fa-trash"></i> Réinitialiser
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CONFIGURATION FEDAPAY (ALTERNATIVE TOGO) ──────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#6c5ce7 0%,#4834d4 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-wallet" style="color:#fff;font-size:1.2rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Configuration FedaPay</h3>
+                <p style="color:rgba(255,255,255,.7);font-size:.8rem;margin:0">Alternative recommandée pour le Togo (T-Money/Flooz)</p>
+              </div>
+              <div style="margin-left:auto">
+                <span id="fedapay-badge" class="badge badge-warning">Non configuré</span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div style="display:flex;align-items:flex-start;gap:.6rem;padding:.75rem 1rem;background:rgba(108,92,231,.05);border:1px solid rgba(108,92,231,.2);border-radius:8px;margin-bottom:1.25rem">
+                <i class="fas fa-info-circle" style="color:#6c5ce7;margin-top:.15rem"></i>
+                <div style="font-size:.84rem;color:#444">
+                  <strong>Recommandé :</strong> FedaPay est souvent plus rapide à valider que CinetPay au Togo.
+                  Récupérez votre <strong>Secret Key</strong> sur <a href="https://fedapay.com" target="_blank" style="color:#6c5ce7;font-weight:600">fedapay.com</a>.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">FedaPay Secret Key (Test ou Live)</label>
+                <input type="password" id="fedapay-apikey" class="form-control" placeholder="sk_live_...">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Mode d'exécution</label>
+                <select id="fedapay-mode" class="form-control">
+                  <option value="test">TEST (Sandbox - Simulation)</option>
+                  <option value="live">LIVE (Production - Argent réel)</option>
+                </select>
+              </div>
+
+              <div style="margin-top:1.25rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+                <button class="btn" onclick="saveFedaPaySettings()" id="fedapay-save-btn" style="background:#6c5ce7;color:#fff">
+                  <i class="fas fa-check-circle"></i> Activer FedaPay
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="removeFedaPaySettings()" id="fedapay-remove-btn" style="display:none">
+                   <i class="fas fa-trash"></i> Réinitialiser
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CONFIGURATION KKIAPAY (ALTERNATIVE 2) ──────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#e67e22 0%,#d35400 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-money-check-alt" style="color:#fff;font-size:1.2rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Configuration KKiaPay</h3>
+                <p style="color:rgba(255,255,255,.7);font-size:.8rem;margin:0">Solution moderne par Widget (Togo & Bénin)</p>
+              </div>
+              <div style="margin-left:auto">
+                <span id="kkiapay-badge" class="badge badge-warning">Non configuré</span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div class="form-group">
+                <label class="form-label">KKiaPay Public Key</label>
+                <input type="text" id="kkiapay-publickey" class="form-control" placeholder="Entrez votre Public Key">
+              </div>
+
+              <div class="form-group">
+                <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+                  <input type="checkbox" id="kkiapay-sandbox" checked style="width:16px;height:16px">
+                  <span class="form-label" style="margin:0">Utiliser le mode Sandbox (Test)</span>
+                </label>
+              </div>
+
+              <div style="margin-top:1.25rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+                <button class="btn" onclick="saveKKiaPaySettings()" id="kkiapay-save-btn" style="background:#e67e22;color:#fff">
+                  <i class="fas fa-save"></i> Enregistrer KKiaPay
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="removeKKiaPaySettings()" id="kkiapay-remove-btn" style="display:none">
+                   <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CONFIGURATION PAYGATE GLOBAL (ALTERNATIVE 3) ──────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#27ae60 0%,#2ecc71 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-globe" style="color:#fff;font-size:1.2rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Configuration Paygate Global</h3>
+                <p style="color:rgba(255,255,255,.7);font-size:.8rem;margin:0">Le leader local (Redirection sécurisée)</p>
+              </div>
+              <div style="margin-left:auto">
+                <span id="paygate-badge" class="badge badge-warning">Non configuré</span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div class="form-group">
+                <label class="form-label">Paygate Global API Key (Token)</label>
+                <div style="position:relative">
+                  <input type="password" id="paygate-apikey" class="form-control" placeholder="Entrez votre Token API">
+                  <button onclick="togglePassword('paygate-apikey')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#999;cursor:pointer">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div style="margin-top:1.25rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+                <button class="btn" onclick="savePaygateSettings()" id="paygate-save-btn" style="background:#27ae60;color:#fff">
+                  <i class="fas fa-save"></i> Activer Paygate
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="removePaygateSettings()" id="paygate-remove-btn" style="display:none">
+                   <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+ 
+          <!-- ── LICENCE DROITS D'AUTEUR (TOGO) ────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#0c3320 0%,#1b6b45 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-gavel" style="color:#fff;font-size:1.2rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Licence Droits d'Auteur (Togo)</h3>
+                <p style="color:rgba(255,255,255,.7);font-size:.8rem;margin:0">Gérez le texte légal affiché sur vos pages confidentalité et mentions</p>
+              </div>
+              <div style="margin-left:auto">
+                <span id="license-badge" class="badge badge-warning">Non défini</span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+               <div style="display:flex;align-items:flex-start;gap:.6rem;padding:.75rem 1rem;background:rgba(12,51,32,.05);border:1px solid rgba(12,51,32,.2);border-radius:8px;margin-bottom:1.25rem">
+                <i class="fas fa-info-circle" style="color:var(--vert);margin-top:.15rem"></i>
+                <div style="font-size:.84rem;color:#444">
+                  Ce texte est conforme à la <strong>Loi n° 91-12 du Togo</strong>. Il sera injecté automatiquement au bas de vos pages légales.
+                </div>
+              </div>
+ 
+              <div class="form-group">
+                <label class="form-label">Contenu de la Licence (HTML supporté)</label>
+                <textarea id="license-text" class="form-control" rows="8" placeholder="Copiez ici le contenu de votre fichier LICENCE_DROITS_AUTEUR_TOGO.html..."></textarea>
+              </div>
+ 
+               <div style="margin-top:2rem; padding-top:1.5rem; border-top: 1px dashed #ddd;">
+                <label class="form-label">Document PDF Officiel (Optionnel)</label>
+                <div class="upload-zone" id="license-pdf-zone" onclick="$('license-pdf-file').click()" style="height: 100px;">
+                  <input type="file" id="license-pdf-file" accept="application/pdf" style="display:none" onchange="uploadLicensePDF(this)">
+                  <i class="fas fa-file-pdf" style="font-size: 1.5rem; color: var(--vert);"></i>
+                  <p id="license-pdf-status">Cliquez pour uploader le PDF original<br><small>Format PDF uniquement</small></p>
+                </div>
+                <div id="license-pdf-preview" style="display:none; margin-top:1rem; align-items:center; gap:1rem; padding:.75rem; background:#f0f7f4; border-radius:8px;">
+                  <i class="fas fa-check-circle" style="color:#22c55e"></i>
+                  <span id="license-pdf-name" style="font-size:.85rem; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">document.pdf</span>
+                  <button class="btn btn-outline btn-sm" onclick="removeLicensePDF()" style="color:var(--danger); border-color:var(--danger);">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+ 
+              <div style="margin-top:1.5rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+                <button class="btn" onclick="saveLicenseSettings()" id="license-save-btn" style="background:var(--vert);color:#fff">
+                  <i class="fas fa-save"></i> Enregistrer la licence
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="removeLicenseSettings()" id="license-remove-btn" style="display:none">
+                   <i class="fas fa-trash"></i> Réinitialiser tout
+                </button>
+              </div>
+            </div>
+          </div>
+ 
+          <!-- ── APERÇU TOGGLE (simulation page Contact) ────────── -->
+          <div class="param-card">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#6B21A8 0%,#9333EA 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-desktop" style="color:#fff;font-size:1.2rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Simulation — Page Contact</h3>
+                <p style="color:rgba(255,255,255,.65);font-size:.8rem;margin:0">Prévisualisation du toggle tel que le
+                  voit le visiteur</p>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <!-- Toggle simulé -->
+              <div style="display:flex;justify-content:center;margin-bottom:1.25rem">
+                <div
+                  style="display:flex;background:#fff;border-radius:999px;box-shadow:0 2px 12px rgba(0,0,0,.12);padding:.3rem;gap:.25rem">
+                  <button id="sim-btn-google" onclick="simSwitch('google')"
+                    style="display:flex;align-items:center;gap:.5rem;padding:.5rem 1.1rem;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;border:none;transition:all .22s;background:var(--vert);color:var(--or)">
+                    <i class="fab fa-google"></i> Google Maps
+                  </button>
+                  <button id="sim-btn-apple" onclick="simSwitch('apple')"
+                    style="display:flex;align-items:center;gap:.5rem;padding:.5rem 1.1rem;border-radius:999px;font-size:.88rem;font-weight:700;cursor:pointer;border:none;transition:all .22s;background:transparent;color:#555">
+                    <i class="fab fa-apple"></i> Apple Maps
+                  </button>
+                </div>
+              </div>
+              <div id="sim-map" style="border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12)">
+                <div class="loading">
+                  <div class="spinner"></div> Chargement de l'aperçu…
+                </div>
+              </div>
+              <p style="font-size:.78rem;color:var(--gris-d);margin-top:.75rem;text-align:center">
+                <i class="fas fa-mouse-pointer"></i> Cliquez sur les boutons ci-dessus pour tester le basculement
+              </p>
+            </div>
+          </div>
+
+          <!-- ── API INTELLIGENCE ARTIFICIELLE ─────────────────────── -->
+          <div class="param-card" style="margin-bottom:1.5rem">
+            <div class="param-card-header" style="background:linear-gradient(135deg,#6c3fc5 0%,#a855f7 100%)">
+              <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                <i class="fas fa-robot" style="color:#fff;font-size:1.2rem"></i>
+              </div>
+              <div>
+                <h3 style="color:#fff;font-size:1rem;margin:0">Assistant IA — Configuration API</h3>
+                <p style="color:rgba(255,255,255,.7);font-size:.8rem;margin:0">Connectez votre assistant IA à un modèle de langage</p>
+              </div>
+              <div style="margin-left:auto">
+                <span id="ai-api-badge" class="badge badge-warning">Non configuré</span>
+              </div>
+            </div>
+            <div style="padding:1.25rem 1.5rem">
+              <div style="display:flex;align-items:flex-start;gap:.6rem;padding:.75rem 1rem;background:rgba(108,63,197,.06);border:1px solid rgba(108,63,197,.2);border-radius:8px;margin-bottom:1.25rem">
+                <i class="fas fa-info-circle" style="color:#8b5cf6;margin-top:.15rem"></i>
+                <div style="font-size:.84rem;color:#444">
+                  L'assistant utilise l'<strong>API Groq</strong> (ultra-rapide, gratuit). Obtenez votre clé sur <a href="https://console.groq.com" target="_blank" style="color:#8b5cf6">console.groq.com</a>.
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Fournisseur API</label>
+                  <select id="ai-provider" class="form-control" onchange="onAIProviderChange()">
+                    <option value="groq">Groq (Recommandé — Gratuit)</option>
+                    <option value="google">Google Gemini (AI Studio)</option>
+                    <option value="openai">OpenAI</option>
+                    <option value="anthropic">Anthropic (Claude)</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin:0">
+                  <label class="form-label">Modèle</label>
+                  <select id="ai-model" class="form-control">
+                    <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Groq)</option>
+                    <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (Groq)</option>
+                    <option value="mixtral-8x7b-32768">Mixtral 8x7B (Groq)</option>
+                    <option value="gemma2-9b-it">Gemma2 9B (Groq)</option>
+                    <option value="gpt-4o-mini">GPT-4o Mini (OpenAI)</option>
+                    <option value="gpt-4o">GPT-4o (OpenAI)</option>
+                    <option value="claude-sonnet-4-20250514">Claude Sonnet 4 (Anthropic)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:.75rem;position:relative">
+                <label class="form-label">Clé API <span style="color:#8b5cf6">*</span></label>
+                <div style="display:flex;gap:.5rem">
+                  <input type="password" id="ai-apikey" class="form-control" placeholder="gsk_... ou sk-... ou sk-ant-...">
+                  <button onclick="togglePassword('ai-apikey')" type="button" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:.5rem .75rem;cursor:pointer;color:#888">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1.25rem">
+                <label class="form-label">Nom du salon <span style="color:#999;font-size:.78rem">(utilisé dans les réponses de l'assistant)</span></label>
+                <input type="text" id="ai-salon-name" class="form-control" placeholder="MiraLocks" value="MiraLocks">
+              </div>
+
+              <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+                <button class="btn" onclick="saveAISettings('admin')" style="background:linear-gradient(135deg,#6c3fc5,#a855f7);color:#fff;border:none">
+                  <i class="fas fa-save"></i> Enregistrer la configuration
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="testAIConnection('admin')" id="ai-test-btn">
+                  <i class="fas fa-plug"></i> Tester la connexion
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="clearAISettings('admin')" style="color:#e74c3c;border-color:#e74c3c">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </div>
+              <div id="ai-test-result" style="margin-top:.75rem;display:none"></div>
+            </div>
+          </div>
+
+          <!-- ── CONFIG CHATBOT PUBLIC (RACCOURCI) ── -->
+          <div class="param-card" style="margin-bottom:1.5rem;border-left:4px solid #10b981;background:#f0fdf4">
+            <div style="padding:1.25rem 1.5rem">
+              <h3 style="color:#065f46;font-size:1rem;margin:0 0 .5rem;display:flex;align-items:center;gap:.5rem">
+                <i class="fas fa-comment-dots"></i> Configuration Chatbot Public
+              </h3>
+              <p style="font-size:.85rem;color:#065f46;margin-bottom:1rem;opacity:.8">
+                Pour "recadrer" le robot du site ou changer ses instructions, utilisez son menu dédié.
+              </p>
+              <button class="btn" style="background:#10b981;color:#fff;border:none;font-weight:600" onclick="document.querySelector('.nav-item[data-panel=\'chatbot-public-config\']').click()">
+                <i class="fas fa-magic"></i> Configurer le Chatbot Public
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- ── HISTORIQUE ─────────────────────────────────── -->
+        <div class="panel" id="panel-historique">
+          <div class="panel-header">
+            <h1 class="panel-title">Historique <span id="historique-count"></span></h1>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+              <select id="historique-filtre" onchange="loadHistorique()"
+                style="padding:.4rem .75rem;border-radius:8px;border:1px solid #ddd;font-size:.85rem;color:var(--vert)">
+                <option value="">Toutes les actions</option>
+                <option value="rdv">Rendez-vous</option>
+                <option value="blog">Blog</option>
+                <option value="galerie">Galerie</option>
+                <option value="avis">Avis</option>
+                <option value="service">Prestations</option>
+                <option value="connexion">Connexion</option>
+              </select>
+              <button class="btn btn-outline btn-sm" onclick="exportHistorique()"><i class="fas fa-download"></i>
+                Exporter</button>
+              <button class="btn btn-danger btn-sm" onclick="clearHistorique()"><i class="fas fa-trash"></i>
+                Vider</button>
+            </div>
+          </div>
+          <div id="historique-list"></div>
+        </div>
+
+        <!-- ── BONS CADEAUX ──────────────────────────────── -->
+        <div class="panel" id="panel-bons-cadeaux">
+          <div class="panel-header">
+            <h1 class="panel-title">Bons cadeaux</h1>
+            <p class="panel-subtitle">Créez et gérez les bons cadeaux numériques Miralocks</p>
+          </div>
+          <div id="bons-panel"></div>
+        </div>
+
+        <!-- ── PACKS SÉANCES ─────────────────────────────── -->
+        <div class="panel" id="panel-packs-seances">
+          <div class="panel-header">
+            <h1 class="panel-title">Packs de séances</h1>
+            <p class="panel-subtitle">Gérez les packs prépayés et le solde de séances par client</p>
+          </div>
+          <div id="packs-panel"></div>
+        </div>
+
+        <!-- ── PARRAINAGE ────────────────────────────────── -->
+        <div class="panel" id="panel-parrainage">
+          <div class="panel-header">
+            <h1 class="panel-title">Programme de parrainage</h1>
+            <p class="panel-subtitle">Suivez les recommandations clients et accordez les crédits</p>
+          </div>
+          <div id="parrainage-panel"></div>
+        </div>
+
+        <!-- ── ASSISTANT IA MIRALOCKS ──────────────────────────────── -->
+        <div class="panel" id="panel-assistant-ia">
+          <div class="panel-header">
+            <h1 class="panel-title">Assistant IA <span id="ia-panel-subtitle">Expert coiffure afro & locks — MiraLocks</span></h1>
+          </div>
+
+          <div id="ia-container" style="display:grid;grid-template-columns:1fr 340px;gap:1.25rem;height:calc(100vh - 180px);min-height:520px">
+
+            <!-- Chat principal -->
+            <div style="display:flex;flex-direction:column;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden">
+
+              <!-- Messages -->
+              <div id="ia-messages" style="flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem">
+                <!-- Message de bienvenue -->
+                <div class="ia-msg ia-msg--bot">
+                  <div class="ia-avatar"><i class="fas fa-robot"></i></div>
+                  <div class="ia-bubble">
+                    <p>Bonjour ! Je suis l'assistant IA de <strong>MiraLocks</strong>, spécialisé en coiffure afro, locks, tresses et soins capillaires.</p>
+                    <p style="margin-top:.5rem">Je peux vous aider sur :</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem">
+                      <span class="ia-tag" onclick="iaQuickSend(this)">💧 Soins & hydratation</span>
+                      <span class="ia-tag" onclick="iaQuickSend(this)">🔒 Techniques locks</span>
+                      <span class="ia-tag" onclick="iaQuickSend(this)">💰 Conseils tarifs</span>
+                      <span class="ia-tag" onclick="iaQuickSend(this)">📋 Fiche client type</span>
+                      <span class="ia-tag" onclick="iaQuickSend(this)">📱 Idées contenu réseaux</span>
+                      <span class="ia-tag" onclick="iaQuickSend(this)">🌿 Ingrédients naturels</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Zone de saisie -->
+              <div style="border-top:1px solid var(--border);padding:1rem;display:flex;gap:.75rem;align-items:flex-end;background:var(--bg-card)">
+                <textarea id="ia-input" rows="2" placeholder="Posez votre question sur la coiffure, les soins, la gestion..." style="flex:1;resize:none;border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;font-size:.9rem;background:var(--bg);color:var(--text);outline:none;font-family:inherit;transition:border-color .2s" onkeydown="iaHandleKey(event)"></textarea>
+                <button onclick="iaSend()" id="ia-send-btn" style="background:var(--vert);color:#fff;border:none;border-radius:10px;padding:.65rem 1.1rem;cursor:pointer;font-size:1rem;display:flex;align-items:center;gap:.4rem;white-space:nowrap;transition:opacity .2s">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Panneau latéral : sujets & infos -->
+            <div style="display:flex;flex-direction:column;gap:1rem;overflow-y:auto">
+
+              <!-- Sujets rapides -->
+              <div style="background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border);padding:1.1rem">
+                <h3 style="font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--vert);margin-bottom:.9rem"><i class="fas fa-bolt"></i> Accès rapide</h3>
+                <div style="display:flex;flex-direction:column;gap:.4rem">
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">🔒 Comment installer des locks</button>
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">💆 Soins scalp sensible</button>
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">✂️ Retouche locks : fréquence</button>
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">🌺 Recette masque naturel</button>
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">📊 Comment fixer mes tarifs</button>
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">📝 Conseils pour fidéliser</button>
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">🛍️ Produits à recommander</button>
+                  <button class="ia-quick-btn" onclick="iaQuickSend(this)">📸 Caption Instagram locks</button>
+                </div>
+              </div>
+
+              <!-- Base de connaissance -->
+              <div style="background:linear-gradient(135deg,rgba(12,51,32,.06),rgba(12,51,32,.02));border-radius:var(--radius);border:1px solid rgba(12,51,32,.15);padding:1.1rem">
+                <h3 style="font-size:.85rem;font-weight:700;color:var(--vert);margin-bottom:.75rem"><i class="fas fa-brain"></i> Base de connaissance</h3>
+                <div style="font-size:.78rem;color:var(--text-muted);line-height:1.6">
+                  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem"><i class="fas fa-check-circle" style="color:#22c55e"></i> Techniques locks & tresses</div>
+                  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem"><i class="fas fa-check-circle" style="color:#22c55e"></i> Soins & ingrédients naturels</div>
+                  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem"><i class="fas fa-check-circle" style="color:#22c55e"></i> Gestion & tarification salon</div>
+                  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem"><i class="fas fa-check-circle" style="color:#22c55e"></i> Marketing & réseaux sociaux</div>
+                  <div style="display:flex;align-items:center;gap:.5rem"><i class="fas fa-check-circle" style="color:#22c55e"></i> Diagnostic capillaire</div>
+                </div>
+                <div style="margin-top:.9rem;padding:.6rem;background:rgba(108,63,197,.08);border-radius:8px;font-size:.75rem;color:#8b5cf6" id="ia-api-status-badge">
+                  <i class="fas fa-circle-notch fa-spin"></i> Vérification de la configuration…
+                </div>
+              </div>
+
+              <!-- Bouton effacer -->
+              <button onclick="iaClear()" style="background:none;border:1px solid var(--border);border-radius:10px;padding:.6rem;font-size:.8rem;color:var(--text-muted);cursor:pointer;width:100%;transition:.2s" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='';this.style.color=''">
+                <i class="fas fa-trash-alt"></i> Effacer la conversation
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CHATBOT PUBLIC CONFIG ────────────────────────── -->
+        <div class="panel" id="panel-chatbot-public-config">
+          <div class="panel-header">
+            <h1 class="panel-title">Chatbot Public <span>Recadrage et comportement</span></h1>
+          </div>
+
+          <div style="max-width:850px;margin:2rem auto;padding:0 1.5rem">
+            <div style="display:grid;grid-template-columns:1fr;gap:2rem">
+              
+              <!-- Carte de recadrage -->
+              <div class="param-card">
+                <div class="param-card-header" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%)">
+                  <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                    <i class="fas fa-magic" style="color:#fff;font-size:1.2rem"></i>
+                  </div>
+                  <div>
+                    <h3 style="color:#fff;font-size:1rem;margin:0">Étape 1 : Le Recadrage</h3>
+                    <p style="color:rgba(255,255,255,.9);font-size:.8rem;margin:0">Écrivez ici comment le robot doit parler aux clients</p>
+                  </div>
+                  <div style="margin-left:auto">
+                    <span id="chat-public-badge" class="badge">Vérification...</span>
+                  </div>
+                </div>
+                <div style="padding:1.5rem">
+                  <div class="form-group">
+                    <label class="form-label" style="font-weight:700">Instructions strictes (System Prompt)</label>
+                    <textarea id="chat-public-system-prompt" class="form-control" style="min-height:220px;font-size:.95rem;line-height:1.6;border:2px solid #e2e8f0;border-radius:12px;padding:1rem" 
+                      placeholder="Exemple : Tu es l'assistante officielle de MiraLocks. Sois polie et chaleureuse. Ne réponds qu'aux questions sur les soins de locks et la boutique."></textarea>
+                    <div style="margin-top:1rem;background:#f0fdf4;padding:1rem;border-radius:10px;border:1px dashed #10b981">
+                      <p style="font-size:.85rem;color:#065f46;margin:0">
+                        <i class="fas fa-lightbulb"></i> <strong>Astuce :</strong> C'est ici que vous lui donnez sa "forme". Soyez précis sur ce qu'il a le droit de dire.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Carte API -->
+              <div class="param-card">
+                <div class="param-card-header" style="background:linear-gradient(135deg,#334155 0%,#1e293b 100%)">
+                  <div class="param-card-icon" style="background:rgba(255,255,255,.15)">
+                    <i class="fas fa-plug" style="color:#fff;font-size:1.2rem"></i>
+                  </div>
+                  <div>
+                    <h3 style="color:#fff;font-size:1rem;margin:0">Étape 2 : Configuration Technique</h3>
+                    <p style="color:rgba(255,255,255,.9);font-size:.8rem;margin:0">Optionnel : gérez une clé différente du reste de l'admin</p>
+                  </div>
+                </div>
+                <div style="padding:1.5rem">
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem">
+                    <div class="form-group" style="margin:0">
+                      <label class="form-label">Fournisseur</label>
+                      <select id="chat-public-provider" class="form-control" style="background:#fff" onchange="onChatPublicProviderChange()">
+                        <option value="groq">Groq (Gratuit/Rapide)</option>
+                        <option value="google">Google Gemini (AI Studio)</option>
+                        <option value="openai">OpenAI</option>
+                        <option value="anthropic">Anthropic (Claude)</option>
+                      </select>
+                    </div>
+                    <div class="form-group" style="margin:0">
+                      <label class="form-label">Modèle</label>
+                      <select id="chat-public-model" class="form-control" style="background:#fff">
+                        <option value="llama-3.1-8b-instant">Llama 3.1 8B (Rapide)</option>
+                        <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Puissant)</option>
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                        <option value="gpt-4o-mini">GPT-4o Mini</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:1.5rem">
+                    <label class="form-label">Clé API Spécifique</label>
+                    <input type="password" id="chat-public-apikey" class="form-control" style="background:#fff" placeholder="Laisser vide pour copier la clé Admin">
+                  </div>
+
+                  <div style="display:flex;gap:1rem;align-items:center">
+                    <button class="btn" onclick="saveChatPublicSettings()" style="background:#10b981;color:#fff;border:none;flex:1;padding:.85rem;font-weight:700">
+                      <i class="fas fa-save"></i> Enregistrer les réglages
+                    </button>
+                    <button class="btn btn-outline" id="chat-public-test-btn" onclick="testAIConnection('public')" style="padding:.85rem">
+                      <i class="fas fa-vial"></i> Tester
+                    </button>
+                  </div>
+                  <div id="chat-public-test-result" style="margin-top:1rem;display:none;padding:1rem;border-radius:8px"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ MODALS ═══════════════════════════════ -->
+
+  <!-- Modal Blog -->
+  <div class="modal-overlay" id="modal-blog">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-blog-title">Nouvel article</span>
+        <div class="modal-close" onclick="closeModal('blog')"><i class="fas fa-times"></i></div>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="blog-edit-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Titre *</label>
+            <input type="text" class="form-control" id="blog-titre" placeholder="Titre de l'article">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Catégorie</label>
+            <select class="form-control" id="blog-cat">
+              <option value="Entretien">Entretien</option>
+              <option value="Création">Création</option>
+              <option value="Coloration">Coloration</option>
+              <option value="Conseil">Conseil</option>
+              <option value="Actualité">Actualité</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Extrait (résumé court)</label>
+          <textarea class="form-control" id="blog-extrait" rows="2"
+            placeholder="Résumé affiché sur la liste…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contenu complet</label>
+          <textarea class="form-control" id="blog-contenu" rows="6" placeholder="Corps de l'article…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Photo de couverture</label>
+          <div class="upload-zone" id="blog-upload-zone">
+            <input type="file" id="blog-photo-file" accept="image/*">
+            <i class="fas fa-image"></i>
+            <p>Cliquez ou glissez une image ici<br><small>JPG, PNG, WebP — max 5 Mo</small></p>
+          </div>
+          <div class="upload-preview" id="blog-preview"></div>
+          <div class="upload-progress" id="blog-progress" style="display:none">
+            <div class="upload-progress-bar" id="blog-progress-bar"></div>
+          </div>
+          <input type="hidden" id="blog-photo-url">
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+            <input type="checkbox" id="blog-publie" style="width:16px;height:16px">
+            <span class="form-label" style="margin:0">Publier immédiatement</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('blog')">Annuler</button>
+        <button class="btn btn-primary" id="blog-save-btn" onclick="saveBlog()"><i class="fas fa-save"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Galerie -->
+  <div class="modal-overlay" id="modal-galerie">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Ajouter des photos</span>
+        <div class="modal-close" onclick="closeModal('galerie')"><i class="fas fa-times"></i></div>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="galerie-edit-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Titre</label>
+            <input type="text" class="form-control" id="galerie-titre" placeholder="Ex: Création locks micro">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Catégorie</label>
+            <select class="form-control" id="galerie-cat">
+              <option value="creation">Création</option>
+              <option value="entretien">Entretien</option>
+              <option value="avant-apres">Avant/Après</option>
+              <option value="equipe">Équipe</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Photos (sélection multiple possible)</label>
+          <div class="upload-zone" id="galerie-upload-zone">
+            <input type="file" id="galerie-photo-files" accept="image/*" multiple>
+            <i class="fas fa-images"></i>
+            <p>Cliquez ou glissez vos photos ici<br><small>JPG, PNG, WebP, AVIF — max 10 Mo chacune</small></p>
+          </div>
+          <div class="upload-preview" id="galerie-preview"></div>
+          <div class="upload-progress" id="galerie-progress" style="display:none">
+            <div class="upload-progress-bar" id="galerie-progress-bar"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+            <input type="checkbox" id="galerie-publie" checked style="width:16px;height:16px">
+            <span class="form-label" style="margin:0">Publier immédiatement</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('galerie')">Annuler</button>
+        <button class="btn btn-primary" onclick="saveGalerie()"><i class="fas fa-upload"></i> Uploader</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Vidéo -->
+  <div class="modal-overlay" id="modal-videos">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-video-title">Ajouter une vidéo</span>
+        <div class="modal-close" onclick="closeModal('videos')"><i class="fas fa-times"></i></div>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="video-edit-id">
+        <div class="form-group">
+          <label class="form-label">Titre *</label>
+          <input type="text" class="form-control" id="video-titre" placeholder="Titre de la vidéo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="video-desc" rows="2" placeholder="Courte description…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Source de la vidéo *</label>
+          <div style="display:flex;gap:1.5rem;margin-bottom:.75rem">
+            <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer">
+              <input type="radio" name="video-source" value="file" checked onchange="updateVideoSourceUI()" style="width:16px;height:16px"> Fichier (MP4)
+            </label>
+            <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer">
+              <input type="radio" name="video-source" value="link" onchange="updateVideoSourceUI()" style="width:16px;height:16px"> Lien (TikTok, Insta, YT)
+            </label>
+          </div>
+
+          <!-- Zone Fichier -->
+          <div id="video-source-file-zone">
+            <div class="upload-zone">
+              <input type="file" id="video-file" accept="video/*">
+              <i class="fas fa-video"></i>
+              <p>Cliquez ou glissez votre vidéo<br><small>MP4, MOV, WebM — max 100 Mo</small></p>
+            </div>
+            <div class="upload-preview" id="video-preview"></div>
+          </div>
+
+          <!-- Zone Lien -->
+          <div id="video-source-link-zone" style="display:none">
+            <input type="url" class="form-control" id="video-external-url" placeholder="https://www.tiktok.com/@user/video/..." oninput="autoFetchYoutubeThumb()">
+            <p style="font-size:.78rem;color:var(--gris-d);margin-top:.4rem">Collez le lien TikTok, Instagram ou YouTube.</p>
+          </div>
+
+          <div class="upload-progress" id="video-progress" style="display:none">
+            <div class="upload-progress-bar" id="video-progress-bar"></div>
+          </div>
+          <input type="hidden" id="video-url">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Miniature (optionnel)</label>
+          <div class="upload-zone">
+            <input type="file" id="video-thumb-file" accept="image/*">
+            <i class="fas fa-image"></i>
+            <p>Image miniature<br><small>JPG, PNG — max 2 Mo</small></p>
+          </div>
+          <div class="upload-preview" id="video-thumb-preview"></div>
+          <input type="hidden" id="video-thumb-url">
+
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+            <input type="checkbox" id="video-publie" checked style="width:16px;height:16px">
+            <span class="form-label" style="margin:0">Publier immédiatement</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('videos')">Annuler</button>
+        <button class="btn btn-primary" onclick="saveVideo()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL AVIS ─────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-avis">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Ajouter un avis client</span>
+        <button class="modal-close" onclick="closeModal('avis')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Nom du client *</label>
+          <input type="text" id="avis-admin-nom" class="form-control" placeholder="Ex : Afi Koffi" maxlength="80">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ville / Quartier</label>
+          <input type="text" id="avis-admin-localite" class="form-control" placeholder="Ex : Lomé, Adidogomé…"
+            maxlength="60">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Note (étoiles) *</label>
+          <select id="avis-admin-etoiles" class="form-control">
+            <option value="5">★★★★★ — 5/5 Excellent</option>
+            <option value="4">★★★★☆ — 4/5 Très bien</option>
+            <option value="3">★★★☆☆ — 3/5 Bien</option>
+            <option value="2">★★☆☆☆ — 2/5 Passable</option>
+            <option value="1">★☆☆☆☆ — 1/5 Mauvais</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Témoignage *</label>
+          <textarea id="avis-admin-texte" class="form-control" rows="4" placeholder="Texte du témoignage client…"
+            maxlength="600"></textarea>
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;gap:.75rem">
+          <input type="checkbox" id="avis-admin-approuve" checked style="width:18px;height:18px;cursor:pointer">
+          <label for="avis-admin-approuve" style="cursor:pointer;font-weight:600;color:var(--vert)">Publier
+            immédiatement (approuvé)</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('avis')">Annuler</button>
+        <button class="btn btn-primary" id="avis-admin-save-btn" onclick="saveAvisAdmin()"><i class="fas fa-save"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL SERVICES ────────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-services">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-services-title">Nouvelle prestation</span>
+        <button class="modal-close" onclick="closeModal('services')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="service-edit-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nom du service *</label>
+            <input type="text" id="service-nom" class="form-control" placeholder="Ex: Entretien Locks">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Catégorie</label>
+            <input type="text" id="service-cat" class="form-control" placeholder="Ex: Entretien, Création…">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Prix (FCFA)</label>
+            <input type="text" id="service-prix" class="form-control" placeholder="Ex: 8 000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ordre d'affichage</label>
+            <input type="number" id="service-ordre" class="form-control" value="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+            <input type="checkbox" id="service-actif" checked style="width:16px;height:16px">
+            <span class="form-label" style="margin:0">Service actif (visible par les clients)</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('services')">Annuler</button>
+        <button class="btn btn-primary" id="service-save-btn" onclick="saveService()"><i class="fas fa-save"></i>
+          Enregistrer</button>
+      </div>
+    </div>
+  </div>
+  <!-- Overlay -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+
+  <!-- Drawer latéral -->
+  <nav class="mobile-drawer" id="mobile-drawer" aria-label="Navigation mobile">
+    <div class="drawer-header">
+      <div class="drawer-logo"><img src="assets/admin-logo.jpg" alt="Miralocks Logo"></div>
+      <div>
+        <div class="drawer-title">Miralocks</div>
+        <div class="drawer-subtitle">Administration</div>
+      </div>
+    </div>
+
+    <div class="drawer-section">Tableau de bord</div>
+    <button class="drawer-item active" data-panel="dashboard">
+      <i class="fas fa-chart-pie"></i> Vue d'ensemble
+    </button>
+    <button class="drawer-item" data-panel="google-analytics">
+      <i class="fas fa-chart-line" style="color:#4285F4"></i> Stats Google
+    </button>
+
+    <div class="drawer-section">Contenu</div>
+    <button class="drawer-item" data-panel="blog"><i class="fas fa-newspaper"></i> Articles Blog</button>
+    <button class="drawer-item" data-panel="galerie"><i class="fas fa-images"></i> Galerie Photos</button>
+    <button class="drawer-item" data-panel="videos"><i class="fas fa-video"></i> Vidéos</button>
+    <button class="drawer-item" data-panel="avis"><i class="fas fa-star"></i> Avis Clients</button>
+    
+    <div class="drawer-section">Outils IA</div>
+    <button class="drawer-item" data-panel="assistant-ia"><i class="fas fa-robot"></i> Assistant Admin</button>
+    <button class="drawer-item" data-panel="chatbot-public-config"><i class="fas fa-comment-dots" style="color:#10b981"></i> Chatbot Public</button>
+    
+    <div class="drawer-section">Configuration</div>
+    <button class="drawer-item" data-panel="historique"><i class="fas fa-history"></i> Historique</button>
+    <button class="drawer-item" data-panel="parametres"><i class="fas fa-cog"></i> Paramètres</button>
+    <button class="drawer-item" data-panel="rendezvous"><i class="fas fa-calendar-check"></i> Rendez-vous</button>
+
+    <div style="margin-top:auto;padding:1.25rem;border-top:1px solid #f0f0f0">
+      <button class="btn btn-outline" style="width:100%;font-size:.85rem"
+        onclick="closeDrawer();setTimeout(()=>sb.signOut().then(()=>location.reload()),200)">
+        <i class="fas fa-sign-out-alt"></i> Déconnexion
+      </button>
+    </div>
+  </nav>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- ═══════════════════ SCRIPTS ══════════════════════════════ -->
+  <script src="js/supabase.js?v=009598ff"></script>
+  <script src="js/supabase2.js?v=3e2f748c"></script>
+  <script src="js/admin-charts.js?v=c9d5f39d"></script>
+  <!-- Core admin : auth, nav, thème, vidéos -->
+  <script src="js/admin.js?v=def87306"></script>
+  <!-- Modules métier -->
+  <script src="js/admin-rdv.js?v=23829ffc"></script>
+  <script src="js/admin-galerie.js?v=9f468f57"></script>
+  <script src="js/admin-avis.js?v=258fa010"></script>
+  <script src="js/admin-settings.js?v=9afe3362"></script>
+  <script src="js/admin-services.js?v=4751f372"></script>
+  <script src="js/admin-improvements.js?v=cef12b80"></script>
+  <script src="js/admin-security.js?v=9c840872"></script>
+  <script src="js/admin-analytics.js?v=e6cc8b5b"></script>
+  <script src="js/public-features.js?v=29c11b3b"></script>
+  <script src="js/admin-business.js?v=baa65927"></script>
+  <script src="js/admin-monetisation.js?v=8f0c5cc0"></script>
+  <script src="js/admin-boutique.js?v=d0d719cf"></script>
+  <script src="js/admin-communication.js?v=c46c7bd3"></script>
+  <script src="js/seo-advanced.js?v=6f1f7094"></script>
+  <script src="js/ai-core.js?v=d0d719cf"></script>
+  <script src="js/admin-ai.js?v=b8b11db9"></script>
+
+
+  <script src="js/performance.js?v=25003d19"></script>
+
+  <!-- ── STATISTIQUES VISITES ─────────────────────────── -->
+  <script>
+  let _visitesChart = null;
+  let _visitesLineChart = null;
+  let _visitesDays = 30;
+
+  async function loadVisitesDashboard() {
+    try {
+      const stats = await sb.visites.stats();
+      // Mettre à jour le mini-dashboard (panel principal)
+      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setEl('dv-aujourd-hui', stats.jour);
+      setEl('dv-semaine', stats.semaine);
+      setEl('dv-mois', stats.mois);
+      setEl('dv-total', stats.total);
+      // Charger le mini graphique du dashboard
+      const byDay = await sb.visites.byDay(14);
+      renderDashVisitesChart(byDay);
+    } catch(e) { console.warn('Visites dash:', e); }
+  }
+
+  function renderDashVisitesChart(byDay) {
+    const ctx = document.getElementById('dashVisitesChart');
+    if (!ctx || !window.Chart) return;
+    if (_visitesChart) _visitesChart.destroy();
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const gc = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+    const tc = isDark ? '#a8c4b0' : '#666';
+    _visitesChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: byDay.labels,
+        datasets: [{
+          label: 'Visites',
+          data: byDay.data,
+          fill: true,
+          backgroundColor: 'rgba(12,51,32,0.12)',
+          borderColor: '#0C3320',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#0C3320',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: gc }, ticks: { color: tc, font: { size: 9 }, maxRotation: 45 } },
+          y: { beginAtZero: true, ticks: { stepSize: 1, color: tc }, grid: { color: gc } }
+        }
+      }
+    });
+  }
+
+  async function loadVisitesPanel() {
+    try {
+      // KPI
+      const stats = await sb.visites.stats();
+      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setEl('v-aujourd-hui', stats.jour);
+      setEl('v-semaine', stats.semaine);
+      setEl('v-mois', stats.mois);
+      setEl('v-total', stats.total);
+
+      // Graphique par jour
+      const byDay = await sb.visites.byDay(_visitesDays);
+      renderVisitesLineChart(byDay);
+
+      // Top pages
+      const tp = document.getElementById('visites-top-pages');
+      if (tp) {
+        if (!stats.topPages || stats.topPages.length === 0) {
+          tp.innerHTML = '<p style="color:#aaa;text-align:center;padding:1rem">Aucune donnée disponible</p>';
+        } else {
+          const max = stats.topPages[0][1] || 1;
+          tp.innerHTML = stats.topPages.map(([page, count]) => `
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+              <div style="flex:0 0 140px;font-size:.8rem;color:#555;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${page}">${page}</div>
+              <div style="flex:1;background:#eee;border-radius:999px;height:8px;overflow:hidden">
+                <div style="height:100%;border-radius:999px;background:var(--vert);width:${Math.round(count/max*100)}%;transition:width .5s"></div>
+              </div>
+              <div style="flex:0 0 40px;text-align:right;font-size:.8rem;font-weight:600;color:var(--vert)">${count}</div>
+            </div>
+          `).join('');
+        }
+      }
+    } catch(e) { console.warn('loadVisitesPanel:', e); }
+  }
+
+  function renderVisitesLineChart(byDay) {
+    const ctx = document.getElementById('visitesLineChart');
+    if (!ctx || !window.Chart) return;
+    if (_visitesLineChart) _visitesLineChart.destroy();
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const gc = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+    const tc = isDark ? '#a8c4b0' : '#555';
+    _visitesLineChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: byDay.labels,
+        datasets: [{
+          label: 'Visites/jour',
+          data: byDay.data,
+          fill: true,
+          backgroundColor: 'rgba(12,51,32,0.1)',
+          borderColor: '#0C3320',
+          borderWidth: 2,
+          pointRadius: 4,
+          pointBackgroundColor: '#0C3320',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { title: i => i[0].label, label: i => i.raw + ' visite(s)' } }
+        },
+        scales: {
+          x: { grid: { color: gc }, ticks: { color: tc, font: { size: 10 }, maxRotation: 45 } },
+          y: { beginAtZero: true, ticks: { stepSize: 1, color: tc }, grid: { color: gc } }
+        }
+      }
+    });
+  }
+
+  function changeVisitesDays(n) {
+    _visitesDays = n;
+    ['7','30','90'].forEach(v => {
+      const btn = document.getElementById('vbtn-' + v);
+      if (!btn) return;
+      if (v == n) {
+        btn.style.background = 'var(--vert)'; btn.style.color = '#fff';
+        btn.classList.remove('btn-outline');
+      } else {
+        btn.style.background = ''; btn.style.color = '';
+        btn.classList.add('btn-outline');
+      }
+    });
+    sb.visites.byDay(n).then(renderVisitesLineChart).catch(console.warn);
+  }
+
+  // showPanel helper (utilisé par le bouton "Voir tout" dans le dashboard)
+  window.showPanel = window.showPanel || function(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const panel = document.getElementById('panel-' + name);
+    if (panel) panel.classList.add('active');
+    const nav = document.querySelector(`.nav-item[data-panel="${name}"]`);
+    if (nav) nav.classList.add('active');
+    if (name === 'google-analytics') setTimeout(loadVisitesPanel, 100);
+  };
+
+  // Charger le mini-widget dans le dashboard au démarrage
+  // Attendre que sb et la session soient prêts
+  function _waitAndLoadVisites() {
+    if (typeof sb === 'undefined' || typeof sb.visites === 'undefined') {
+      setTimeout(_waitAndLoadVisites, 300);
+      return;
+    }
+    // Attendre que l'utilisateur soit connecté (session valide)
+    sb.getValidSession().then(s => {
+      if (s && s.token) {
+        loadVisitesDashboard();
+      } else {
+        setTimeout(_waitAndLoadVisites, 1000);
+      }
+    }).catch(() => setTimeout(_waitAndLoadVisites, 1000));
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(_waitAndLoadVisites, 2000);
+  });
+  </script>
+
+  <!-- ═══════════════════ ASSISTANT IA STYLES ══════════════════ -->
+  <style>
+    .ia-msg { display:flex; gap:.75rem; align-items:flex-start; }
+    .ia-msg--bot { flex-direction:row; }
+    .ia-msg--user { flex-direction:row-reverse; }
+    .ia-avatar {
+      width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      font-size:.95rem; flex-shrink:0;
+      background:linear-gradient(135deg,#0C3320,#1a5c3a); color:#fff;
+    }
+    .ia-msg--user .ia-avatar { background:linear-gradient(135deg,#c9a84c,#e0c060); }
+    .ia-bubble {
+      max-width:78%; padding:.75rem 1rem; border-radius:14px; font-size:.875rem; line-height:1.6;
+      background:var(--bg); border:1px solid var(--border); color:var(--text);
+    }
+    .ia-msg--user .ia-bubble { background:linear-gradient(135deg,#0C3320,#1a5c3a); color:#fff; border:none; border-radius:14px 14px 4px 14px; }
+    .ia-msg--bot .ia-bubble { border-radius:14px 14px 14px 4px; }
+    .ia-bubble p { margin:0 0 .35rem; }
+    .ia-bubble p:last-child { margin:0; }
+    .ia-bubble strong { color:var(--vert); }
+    .ia-msg--user .ia-bubble strong { color:#a8f0c0; }
+    .ia-bubble ul { margin:.35rem 0 0 1.1rem; padding:0; }
+    .ia-bubble ul li { margin-bottom:.25rem; }
+    .ia-bubble .ia-section { font-weight:700; color:var(--vert); margin:.6rem 0 .25rem; font-size:.82rem; text-transform:uppercase; letter-spacing:.03em; display:block; }
+    .ia-msg--user .ia-bubble .ia-section { color:#a8f0c0; }
+    .ia-tag {
+      display:inline-block; padding:.3rem .65rem; border-radius:20px; font-size:.78rem; cursor:pointer;
+      background:rgba(12,51,32,.1); color:var(--vert); border:1px solid rgba(12,51,32,.2);
+      transition:.15s;
+    }
+    .ia-tag:hover { background:var(--vert); color:#fff; }
+    .ia-quick-btn {
+      width:100%; text-align:left; background:none; border:1px solid var(--border); border-radius:8px;
+      padding:.55rem .75rem; font-size:.8rem; cursor:pointer; color:var(--text); transition:.15s;
+    }
+    .ia-quick-btn:hover { background:var(--vert); color:#fff; border-color:var(--vert); }
+    .ia-typing { display:flex; gap:4px; align-items:center; padding:.1rem 0; }
+    .ia-typing span { width:7px; height:7px; border-radius:50%; background:var(--vert); opacity:.4; animation:iaBounce 1.2s infinite; }
+    .ia-typing span:nth-child(2) { animation-delay:.2s; }
+    .ia-typing span:nth-child(3) { animation-delay:.4s; }
+    @keyframes iaBounce { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-6px);opacity:1} }
+    #ia-messages::-webkit-scrollbar { width:5px; }
+    #ia-messages::-webkit-scrollbar-track { background:transparent; }
+    #ia-messages::-webkit-scrollbar-thumb { background:rgba(12,51,32,.2); border-radius:99px; }
+    @media(max-width:900px){
+      #ia-container { grid-template-columns:1fr !important; height:auto !important; }
+    }
+  </style>
+
+  <!-- ═══════════════════ ASSISTANT IA ENGINE ══════════════════ -->
+  <script>
+  (function(){
+    /* ── Helpers ─────────────────────────────────────── */
+    function _esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function iaAddMsg(html, role) {
+      const wrap = document.getElementById('ia-messages');
+      if (!wrap) return null;
+      const icon = role === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot" style="color:#8b5cf6"></i>';
+      const div = document.createElement('div');
+      div.className = 'ia-msg ia-msg--' + role;
+      div.innerHTML = '<div class="ia-avatar">' + icon + '</div><div class="ia-bubble">' + html + '</div>';
+      wrap.appendChild(div);
+      wrap.scrollTop = wrap.scrollHeight;
+      return div;
+    }
+
+    /* ── Historique de conversation ────────────────── */
+    let _iaHistory = [];
+
+    /* ── Envoi message ─────────────────────────────── */
+    window.iaSend = async function() {
+      const input = document.getElementById('ia-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      input.style.height = '';
+
+      iaAddMsg(_esc(text), 'user');
+      _iaHistory.push({ role:'user', content: text });
+
+      const typingEl = iaAddMsg('<div class="ia-typing"><span></span><span></span><span></span></div>', 'bot');
+      const sendBtn = document.getElementById('ia-send-btn');
+      if (sendBtn) sendBtn.disabled = true;
+
+      try {
+        const config = await window.AICore.getConfig('admin');
+        if (!config.apikey) {
+          if (typingEl) typingEl.remove();
+          iaAddMsg(`<p>⚙️ <strong>Assistant non configuré</strong> — Rendez-vous dans <strong>Paramètres → API IA</strong> pour ajouter votre clé API Groq et activer l'assistant.</p>`, 'bot');
+          return;
+        }
+
+        const history = _iaHistory.slice(-10).map(m => ({
+          role: m.role === 'bot' ? 'assistant' : 'user',
+          content: m.content
+        }));
+
+        const reply = await window.AICore.call(history, config);
+        if (typingEl) typingEl.remove();
+
+      // Convertir les retours ligne en <p> et markdown basique
+      const formatted = reply
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^###\s+(.+)$/gm, '<h4 style="margin:.5rem 0 .25rem;color:#8b5cf6">$1</h4>')
+        .replace(/^##\s+(.+)$/gm, '<h3 style="margin:.6rem 0 .3rem;color:#8b5cf6">$1</h3>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>\n?)+/g, (m) => '<ul style="margin:.4rem 0 .4rem 1rem">' + m + '</ul>')
+        .split(/\n\n+/)
+        .map(p => p.trim().startsWith('<') ? p : `<p>${p}</p>`)
+        .join('');
+
+      iaAddMsg(formatted, 'bot');
+      _iaHistory.push({ role:'bot', content: reply });
+
+    } catch(err) {
+      if (typingEl) typingEl.remove();
+      iaAddMsg(`<p>❌ <strong>Erreur :</strong> ${_esc(err.message)}</p><p style="font-size:.82rem;color:#888;margin-top:.3rem">Vérifiez votre clé API dans Paramètres → API IA.</p>`, 'bot');
+    } finally {
+      if (sendBtn) sendBtn.disabled = false;
+    }
+  };
+
+  window.iaQuickSend = function(el) {
+    const input = document.getElementById('ia-input');
+    if (!input) return;
+    const text = el.textContent.replace(/^[\u{1F000}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}✨🔒💆✂️🌺💰📋📱🌿🛍️📸📊🔬🎨⚕️🌱💧👱]\s*/u,'').trim();
+    input.value = text;
+    iaSend();
+  };
+
+  window.iaHandleKey = function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); iaSend(); }
+  };
+
+  window.iaClear = function() {
+    const wrap = document.getElementById('ia-messages');
+    if (!wrap) return;
+    _iaHistory = [];
+    wrap.innerHTML = `<div class="ia-msg ia-msg--bot">
+      <div class="ia-avatar"><i class="fas fa-robot" style="color:#8b5cf6"></i></div>
+      <div class="ia-bubble">
+        <p>Conversation effacée. Comment puis-je vous aider ? 💚</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem">
+          <span class="ia-tag" onclick="iaQuickSend(this)">🔒 Techniques locks</span>
+          <span class="ia-tag" onclick="iaQuickSend(this)">💆 Soins scalp sensible</span>
+          <span class="ia-tag" onclick="iaQuickSend(this)">💰 Conseils tarifs</span>
+          <span class="ia-tag" onclick="iaQuickSend(this)">🌿 Ingrédients naturels</span>
+        </div>
+      </div>
+    </div>`;
+  };
+
+  /* ── Init : vérifier config au chargement ───────── */
+  async function iaInit() {
+    const badge = document.getElementById('ia-api-status-badge');
+    const subtitle = document.getElementById('ia-panel-subtitle');
+    try {
+      const config = await getAIConfig();
+      if (config.apikey) {
+        if (badge) { badge.innerHTML = '<i class="fas fa-check-circle"></i> API connectée · ' + (config.salonName||'MiraLocks'); badge.style.cssText='background:#22c55e;color:#fff;padding:.25rem .75rem;border-radius:20px;font-size:.78rem'; }
+        if (subtitle) subtitle.textContent = 'Assistante IA — ' + (config.salonName||'MiraLocks') + ' · Propulsé par ' + (config.provider||'Groq').toUpperCase();
+        // Mettre à jour le msg de bienvenue avec le vrai nom
+        const welcomeBubble = document.querySelector('#ia-messages .ia-bubble p strong');
+        if (welcomeBubble) welcomeBubble.textContent = config.salonName;
+      } else {
+        if (badge) { badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Clé API manquante — configurer dans Paramètres'; badge.style.cssText='background:#f59e0b;color:#fff;padding:.25rem .75rem;border-radius:20px;font-size:.78rem'; }
+        if (subtitle) subtitle.textContent = 'Assistante IA — Configurer l\'API dans Paramètres';
+      }
+    } catch(e) {
+      if (badge) { badge.innerHTML = '<i class="fas fa-times-circle"></i> Erreur de configuration'; badge.style.cssText='background:#ef4444;color:#fff;padding:.25rem .75rem;border-radius:20px;font-size:.78rem'; }
+    }
+  }
+
+  /* ── Settings : sauvegarder / tester ───────────── */
+  window.saveAISettings = async function() {
+    const apikey = document.getElementById('ai-apikey')?.value?.trim();
+    const model = document.getElementById('ai-model')?.value;
+    const provider = document.getElementById('ai-provider')?.value;
+    const salonName = document.getElementById('ai-salon-name')?.value?.trim() || 'MiraLocks';
+    if (!apikey) { window.toast?.('⚠️ Veuillez entrer une clé API', 'warning'); return; }
+
+    const config = { apikey, model, provider, salonName };
+
+    // Sauvegarde localStorage (instantanée, toujours disponible)
+    aiSaveLocal(config);
+
+    // Tentative Supabase en arrière-plan (sans bloquer)
+    aiSaveSupabase(config);
+
+    window.toast?.('✅ Configuration IA sauvegardée !', 'success');
+    const badge = document.getElementById('ai-api-badge');
+    if (badge) { badge.textContent = '✓ Configuré'; badge.className = 'badge badge-success'; }
+    await iaInit();
+  };
+
+  window.testAIConnection = async function() {
+    const resultDiv = document.getElementById('ai-test-result');
+    const apikey = document.getElementById('ai-apikey')?.value?.trim();
+    const model = document.getElementById('ai-model')?.value;
+    const provider = document.getElementById('ai-provider')?.value;
+    const salonName = document.getElementById('ai-salon-name')?.value?.trim() || 'MiraLocks';
+    if (!apikey) { window.toast?.('⚠️ Entrez d\'abord une clé API', 'warning'); return; }
+    if (resultDiv) { resultDiv.style.display='block'; resultDiv.innerHTML='<div class="loading"><div class="spinner"></div> Test en cours…</div>'; }
+    try {
+      const reply = await callAI([{role:'user', content:'Dis juste "Connexion réussie !" en une phrase.'}], {apikey, model, provider, salonName});
+      if (resultDiv) resultDiv.innerHTML = `<div style="padding:.75rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;color:#166534;font-size:.85rem"><i class="fas fa-check-circle"></i> <strong>Connexion réussie !</strong> Réponse du modèle : "${_esc(reply.substring(0,100))}"</div>`;
+    } catch(e) {
+      if (resultDiv) resultDiv.innerHTML = `<div style="padding:.75rem;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;color:#991b1b;font-size:.85rem"><i class="fas fa-times-circle"></i> <strong>Échec :</strong> ${_esc(e.message)}</div>`;
+    }
+  };
+
+  window.clearAISettings = async function() {
+    if (!confirm('Supprimer la configuration API IA ?')) return;
+    // Supprimer localStorage
+    try { localStorage.removeItem(AI_LS_KEY); } catch(e) {}
+    // Tentative suppression Supabase (silencieuse)
+    try {
+      await Promise.all([
+        window.sb?.settings?.delete('ai_apikey'),
+        window.sb?.settings?.delete('ai_model'),
+        window.sb?.settings?.delete('ai_provider'),
+        window.sb?.settings?.delete('ai_salon_name'),
+      ]);
+    } catch(e) {}
+    ['ai-apikey','ai-model','ai-provider','ai-salon-name'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = el.tagName==='SELECT' ? el.options[0].value : (id==='ai-salon-name'?'MiraLocks':'');
+    });
+    window.toast?.('Configuration IA supprimée', 'info');
+    await iaInit();
+  };
+
+  window.onAIProviderChange = function() {
+    const provider = document.getElementById('ai-provider')?.value;
+    const modelSel = document.getElementById('ai-model');
+    if (!modelSel) return;
+    const models = {
+      groq: [
+        ['llama-3.3-70b-versatile','Llama 3.3 70B (Groq)'],
+        ['llama-3.1-8b-instant','Llama 3.1 8B Instant (Groq)'],
+        ['mixtral-8x7b-32768','Mixtral 8x7B (Groq)'],
+        ['gemma2-9b-it','Gemma2 9B (Groq)'],
+      ],
+      openai: [
+        ['gpt-4o-mini','GPT-4o Mini (OpenAI)'],
+        ['gpt-4o','GPT-4o (OpenAI)'],
+        ['gpt-3.5-turbo','GPT-3.5 Turbo (OpenAI)'],
+      ],
+      anthropic: [
+        ['claude-sonnet-4-20250514','Claude Sonnet 4 (Anthropic)'],
+        ['claude-haiku-4-5-20251001','Claude Haiku (Anthropic)'],
+      ],
+      google: [
+        ['gemini-1.5-flash','Gemini 1.5 Flash (Google)'],
+        ['gemini-1.5-pro','Gemini 1.5 Pro (Google)'],
+        ['gemini-2.0-flash','Gemini 2.0 Flash (Google)'],
+      ]
+    };
+    modelSel.innerHTML = (models[provider]||models.groq).map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
+  };
+
+  window.onChatPublicProviderChange = function() {
+    const provider = document.getElementById('chat-public-provider')?.value;
+    const modelSel = document.getElementById('chat-public-model');
+    if (!modelSel) return;
+    const models = {
+      groq: [
+        ['llama-3.1-8b-instant','Llama 3.1 8B (Rapide)'],
+        ['llama-3.3-70b-versatile','Llama 3.3 70B (Puissant)'],
+      ],
+      google: [
+        ['gemini-1.5-flash','Gemini 1.5 Flash (Recommandé)'],
+        ['gemini-1.5-pro','Gemini 1.5 Pro'],
+      ],
+      openai: [
+        ['gpt-4o-mini','GPT-4o Mini'],
+        ['gpt-4o','GPT-4o'],
+      ],
+      anthropic: [
+        ['claude-sonnet-4-20250514','Claude Sonnet 4'],
+        ['claude-haiku-4-5-20251001','Claude Haiku'],
+      ]
+    };
+    modelSel.innerHTML = (models[provider]||models.groq).map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
+  };
+
+  /* ── Charger les settings dans les inputs au chargement ── */
+  async function loadAISettingsIntoForm() {
+    try {
+      const config = await window.AICore.getConfig('admin');
+      const provEl = document.getElementById('ai-provider');
+      const modelEl = document.getElementById('ai-model');
+      const keyEl = document.getElementById('ai-apikey');
+      const nameEl = document.getElementById('ai-salon-name');
+      if (provEl && config.provider) { provEl.value = config.provider; onAIProviderChange(); }
+      if (modelEl && config.model) { modelEl.value = config.model; }
+      if (keyEl && config.apikey) { keyEl.value = config.apikey; }
+      if (nameEl && config.salonName) { nameEl.value = config.salonName; }
+      const badge = document.getElementById('ai-api-badge');
+      if (badge && config.apikey) { badge.textContent = '✓ Configuré'; badge.className = 'badge badge-success'; }
+    } catch(e) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    iaInit();
+    loadAISettingsIntoForm();
+    const ta = document.getElementById('ia-input');
+    if (ta) {
+      ta.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+      });
+    }
+  });
+
+  })();
+  </script>
+
+</body>
+</html>
+

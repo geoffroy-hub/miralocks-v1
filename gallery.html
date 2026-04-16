@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta name="google" content="notranslate">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0C3320">
+  <title>Galerie — Miralocks | Réalisations, Avant/Après & Vidéos</title>
+  <meta name="description"
+    content="Galerie complète de Miralocks : réalisations locks, transformations avant/après et vidéos. Lomé, Togo.">
+  <meta property="og:title" content="Galerie — Miralocks | Réalisations & Transformations">
+  <meta property="og:description"
+    content="Découvrez toutes nos créations locks, comparaisons avant/après et vidéos. Institut MiraLocks, Lomé Togo.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_TG">
+  <meta name="geo.region" content="TG">
+  <meta name="geo.placename" content="Lomé, Togo">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://mqityrifhiaarwdcacxo.supabase.co">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css?v=93424812">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <script>document.addEventListener("DOMContentLoaded", function () { document.documentElement.classList.add("ready") });</script>
+  <style>
+    html {
+      visibility: hidden
+    }
+
+    html.ready {
+      visibility: visible
+    }
+
+    /* ── Onglets ── */
+    .gallery-tabs {
+      display: flex;
+      gap: .5rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      padding: 0 1rem
+    }
+
+    .gallery-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .6rem 1.4rem;
+      border-radius: 50px;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid var(--border, #e5e7eb);
+      background: var(--bg-card, #fff);
+      color: var(--gris-d, #888);
+      transition: all .25s
+    }
+
+    .gallery-tab.active,
+    .gallery-tab:hover {
+      background: var(--vert, #0C3320);
+      color: var(--or, #C9A84C);
+      border-color: var(--vert, #0C3320)
+    }
+
+    .tab-count {
+      background: rgba(201, 168, 76, .2);
+      color: var(--or, #C9A84C);
+      font-size: .72rem;
+      padding: 1px 7px;
+      border-radius: 20px;
+      min-width: 22px;
+      text-align: center
+    }
+
+    .gallery-tab.active .tab-count {
+      background: rgba(201, 168, 76, .3)
+    }
+
+    /* ── Filtres catégorie ── */
+    .category-filters {
+      display: flex;
+      gap: .4rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      padding: 0 1rem
+    }
+
+    .cat-btn {
+      padding: .35rem .9rem;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 600;
+      border: 1.5px solid var(--border, #e5e7eb);
+      background: transparent;
+      color: var(--gris-d, #888);
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .cat-btn.active,
+    .cat-btn:hover {
+      background: var(--or, #C9A84C);
+      border-color: var(--or, #C9A84C);
+      color: var(--vert, #0C3320)
+    }
+
+    /* ── Panels ── */
+    .tab-panel {
+      display: none
+    }
+
+    .tab-panel.active {
+      display: block
+    }
+
+    /* ── Grille avant/après ── */
+    .ba-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem
+    }
+
+    .ba-item-u {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, .1);
+      aspect-ratio: 1/1;
+      background: #111;
+      cursor: ew-resize;
+      user-select: none
+    }
+
+    .ba-item-u img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .ba-item-u .ba-b {
+      clip-path: inset(0 50% 0 0)
+    }
+
+    .ba-item-u .ba-a {
+      clip-path: inset(0 0 0 50%)
+    }
+
+    .ba-div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: #fff;
+      transform: translateX(-50%);
+      box-shadow: 0 0 8px rgba(0, 0, 0, .4)
+    }
+
+    .ba-hdl {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--vert, #0C3320);
+      font-size: .9rem;
+      pointer-events: none
+    }
+
+    .ba-labs {
+      position: absolute;
+      bottom: .75rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 1rem;
+      pointer-events: none
+    }
+
+    .ba-lab {
+      background: rgba(0, 0, 0, .55);
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: .05em;
+      text-transform: uppercase
+    }
+
+    .ba-cap {
+      position: absolute;
+      top: .75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: rgba(12, 51, 32, .8);
+      color: var(--or, #C9A84C);
+      font-size: .72rem;
+      font-weight: 600;
+      padding: 3px 12px;
+      border-radius: 20px;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .ba-shr {
+      position: absolute;
+      top: .6rem;
+      right: .6rem;
+      background: rgba(0, 0, 0, .5);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      opacity: 0;
+      transition: opacity .2s
+    }
+
+    .ba-item-u:hover .ba-shr {
+      opacity: 1
+    }
+
+    /* ── Share btn galerie ── */
+    .gallery-item {
+      position: relative
+    }
+
+    .gallery-item .share-btn {
+      position: absolute;
+      top: .5rem;
+      right: .5rem;
+      background: rgba(0, 0, 0, .55);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .2s;
+      z-index: 2;
+      font-size: .8rem
+    }
+
+    .gallery-item:hover .share-btn {
+      opacity: 1
+    }
+
+    /* ── Skeleton ── */
+    .skel {
+      background: linear-gradient(90deg, var(--bg, #f4f4f4) 25%, #e8e8e8 50%, var(--bg, #f4f4f4) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 12px
+    }
+
+    @keyframes shimmer {
+      to {
+        background-position: -200% 0
+      }
+    }
+
+    /* ── Lightbox BA côte à côte ── */
+    .lb-ba {
+      display: flex;
+      gap: 1rem;
+      align-items: stretch;
+      max-width: min(95vw, 900px)
+    }
+
+    .lb-ba-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem
+    }
+
+    .lb-ba-side img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+      max-height: 70vh
+    }
+
+    .lb-ba-lbl {
+      text-align: center;
+      font-size: .8rem;
+      font-weight: 700;
+      padding: .3rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .06em
+    }
+
+    @media(max-width:600px) {
+      .lb-ba {
+        flex-direction: column
+      }
+    }
+
+    /* ── Cat badge sur photos ── */
+    .cat-badge {
+      position: absolute;
+      top: .6rem;
+      left: .6rem;
+      background: rgba(12, 51, 32, .75);
+      color: var(--or, #C9A84C);
+      font-size: .65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      z-index: 1
+    }
+  </style>
+  <script src="js/seo-meta.js?v=1b327d50"></script>
+  <meta property="og:image" content="https://mira-lecks.vercel.app/assets/og-image.jpg">
+  <meta property="og:image:secure_url" content="https://mira-lecks.vercel.app/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Miralocks — Spécialiste locks à Lomé, Togo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://mira-lecks.vercel.app/assets/og-image.jpg">
+  <style id="google-translate-style">
+    body {
+      top: 0 !important
+    }
+
+    .goog-te-banner-frame,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .goog-tooltip,
+    .goog-tooltip:hover {
+      display: none !important
+    }
+
+    .goog-text-highlight {
+      background: none !important;
+      box-shadow: none !important
+    }
+
+    .skiptranslate {
+      display: none !important
+    }
+  </style>
+</head>
+
+<body data-lightbox-managed="true">
+  <a href="#main" class="skip-link">Aller au contenu</a>
+  <div id="page-loader" role="status" aria-label="Chargement">
+    <div class="loader-logo"></div>
+  </div>
+
+  <nav class="nav" role="navigation" aria-label="Navigation principale">
+    <a href="index.html" class="nav-logo" aria-label="Miralocks — Accueil">
+      <picture>
+        <source srcset="assets/logo-transparent.avif" type="image/avif">
+        <source srcset="assets/logo-transparent.webp" type="image/webp">
+        <img src="assets/logo-transparent.png" alt="Logo Miralocks" width="40" height="40" loading="eager"
+          fetchpriority="high">
+      </picture>
+      <span>Miralocks</span>
+    </a>
+    <div class="nav-links" id="nav-links" role="menu">
+      <a href="index.html">Accueil</a>
+      <a href="gallery.html" class="active">Galerie</a>
+      <a href="services.html">Services</a>
+      <a href="boutique.html" class="">Boutique</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">À propos</a>
+      <a href="avis.html">Avis</a>
+      <a href="contact.html">Contact</a>
+      <a href="rendezvous.html" class="btn btn-or nav-cta">Réserver</a>
+    </div>
+    <div class="nav-actions">
+      <button class="lang-selector" aria-label="Switch to English"><span class="lang-current">FR</span><span
+          class="lang-arrow">⌄</span></button>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Changer le thème"><i class="fas fa-moon"></i></button>
+      <span class="nav-divider"></span>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false"
+        aria-controls="nav-links"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="page-pad"></div>
+
+  <div class="page-hero" id="main">
+    <div id="offline-badge"
+      style="display:none;background:rgba(255,165,0,.1);border:1px solid orange;color:orange;padding:.3rem .8rem;border-radius:20px;font-size:.75rem;margin-bottom:1rem;align-items:center;gap:.5rem">
+      <i class="fas fa-wifi-slash"></i> Mode hors-ligne
+    </div>
+    <h1 class="fade-in">Notre Galerie</h1>
+    <p class="fade-in">Réalisations · Avant/Après · Vidéos</p>
+  </div>
+
+  <section class="section" aria-label="Galerie unifiée">
+    <div class="container">
+
+      <!-- Onglets -->
+      <div class="gallery-tabs" role="tablist">
+        <button class="gallery-tab active" role="tab" data-tab="realisations" aria-selected="true">
+          <i class="fas fa-images"></i> Réalisations <span class="tab-count" id="cnt-r">…</span>
+        </button>
+        <button class="gallery-tab" role="tab" data-tab="avant-apres" aria-selected="false">
+          <i class="fas fa-exchange-alt"></i> Avant / Après <span class="tab-count" id="cnt-ba">…</span>
+        </button>
+        <button class="gallery-tab" role="tab" data-tab="videos" aria-selected="false">
+          <i class="fas fa-play-circle"></i> Vidéos <span class="tab-count" id="cnt-v">…</span>
+        </button>
+      </div>
+
+      <!-- Panel Réalisations -->
+      <div class="tab-panel active" id="panel-realisations" role="tabpanel">
+        <div class="category-filters" id="filters-r">
+          <button class="cat-btn active" data-cat="all">Tout</button>
+        </div>
+        <div class="gallery-grid" id="gallery-grid">
+          <div class="skel gallery-item" style="height:300px" data-skel></div>
+          <div class="skel gallery-item" style="height:300px" data-skel></div>
+          <div class="skel gallery-item" style="height:300px" data-skel></div>
+        </div>
+        <div id="r-empty" style="display:none;text-align:center;padding:3rem;color:var(--gris-d)">
+          <i class="fas fa-images" style="font-size:2.5rem;opacity:.3;display:block;margin-bottom:1rem"></i>Aucune photo
+          dans cette catégorie.
+        </div>
+      </div>
+
+      <!-- Panel Avant/Après -->
+      <div class="tab-panel" id="panel-avant-apres" role="tabpanel">
+        <div class="category-filters" id="filters-ba">
+          <button class="cat-btn active" data-cat="all">Tout</button>
+          <button class="cat-btn" data-cat="locks">Locks</button>
+          <button class="cat-btn" data-cat="crochet">Crochet</button>
+          <button class="cat-btn" data-cat="sisterlocks">Sisterlocks</button>
+          <button class="cat-btn" data-cat="entretien">Entretien</button>
+          <button class="cat-btn" data-cat="teinture">Teinture</button>
+        </div>
+        <div class="ba-grid" id="ba-grid">
+          <div class="skel" style="aspect-ratio:1;border-radius:16px" data-skel></div>
+          <div class="skel" style="aspect-ratio:1;border-radius:16px" data-skel></div>
+          <div class="skel" style="aspect-ratio:1;border-radius:16px" data-skel></div>
+        </div>
+      </div>
+
+      <!-- Panel Vidéos -->
+      <div class="tab-panel" id="panel-videos" role="tabpanel">
+        <div class="gallery-grid" id="videos-grid">
+          <div class="skel gallery-item" style="height:280px" data-skel></div>
+          <div class="skel gallery-item" style="height:280px" data-skel></div>
+        </div>
+        <div id="v-empty" style="display:none;text-align:center;padding:3rem;color:var(--gris-d)">
+          <i class="fas fa-video" style="font-size:2.5rem;opacity:.3;display:block;margin-bottom:1rem"></i>Aucune vidéo
+          disponible.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lightbox unifiée -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galerie">
+    <button class="lightbox-close" aria-label="Fermer"><i class="fas fa-times"></i></button>
+    <button class="lightbox-prev" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
+    <img class="lightbox-img" src="" alt="" loading="lazy">
+    <div class="lightbox-video-wrap" style="display:none;width:100%;justify-content:center;align-items:center"></div>
+    <div id="lb-ba-wrap" style="display:none;justify-content:center;align-items:center;padding:1rem;width:100%"></div>
+    <button class="lightbox-next" aria-label="Suivant"><i class="fas fa-chevron-right"></i></button>
+  </div>
+
+  <a href="https://wa.me/22897989001" class="whatsapp-float" aria-label="Contacter sur WhatsApp" target="_blank"
+    rel="noopener"><i class="fab fa-whatsapp"></i></a>
+  <div class="cookie-banner" role="dialog" aria-label="Cookies">
+    <p class="cookie-text">Nous utilisons des cookies. <a href="confidentialite.html">En savoir plus</a></p>
+    <div class="cookie-btns">
+      <button class="btn btn-or cookie-accept" style="padding:.4rem 1rem;font-size:.85rem">Accepter</button>
+      <button class="btn btn-vert cookie-refuse" style="padding:.4rem 1rem;font-size:.85rem">Refuser</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <picture>
+            <source srcset="assets/logo-or.avif" type="image/avif">
+            <source srcset="assets/logo-or.webp" type="image/webp"><img src="assets/logo-or.png" alt="Logo Miralocks"
+              width="120" height="120" loading="lazy" style="filter:none;width:120px;height:auto">
+          </picture>
+        </div>
+        <p class="footer-desc">Spécialiste des locks à Lomé, Togo. Expertise, passion et bienveillance pour sublimer vos
+          cheveux naturels.</p>
+        <div class="footer-socials" style="margin-top:1.25rem">
+          <a href="https://www.instagram.com/institut_Miralocks" target="_blank" rel="noopener"
+            class="social-btn instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/mira.lachocote" target="_blank" rel="noopener" class="social-btn facebook"
+            aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.tiktok.com/@institut_mira_locks228" target="_blank" rel="noopener"
+            class="social-btn tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="https://wa.me/22897989001" target="_blank" rel="noopener" class="social-btn whatsapp"
+            aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer-heading">Navigation</h3>
+        <ul class="footer-links">
+          <li><a href="gallery.html">Galerie</a></li>
+          <li><a href="services.html">Services & Tarifs</a></li>
+          <li><a href="boutique.html">Boutique</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="about.html">À propos</a></li>
+          <li><a href="avis.html">Témoignages</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-heading">Horaires</h3>
+        <ul class="footer-links">
+          <li>Mardi – Vendredi : 08h00–18h00</li>
+          <li>Samedi : 08h00–18h00</li>
+          <li style="color:rgba(201,168,76,.6);margin-top:.5rem">Fermé Dimanche & Lundi</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-heading">Contact</h3>
+        <ul class="footer-links">
+          <li><i class="fas fa-phone" style="color:var(--or);width:18px"></i> <a href="tel:+22897989001"
+              style="color:inherit;text-decoration:none">+228 97 98 90 01</a></li>
+          <li><i class="fas fa-map-marker-alt" style="color:var(--or);width:18px"></i> Agoè Cacaveli, Lomé</li>
+          <li style="margin-top:1rem"><a href="rendezvous.html" class="btn btn-or"
+              style="padding:.5rem 1.25rem;font-size:.9rem">Prendre RDV</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Miralocks — Tous droits réservés</span>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="confidentialite.html">Confidentialité</a>
+        <a href="admin.html" style="opacity:0.2;font-size:0.7rem;text-decoration:none;"
+          title="Accès Administration">.</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/supabase.js?v=009598ff"></script>
+  <script src="js/supabase2.js?v=3e2f748c"></script>
+  <script>
+    /* ============================================================
+       GALERIE UNIFIÉE — Logique complète v1.0
+    ============================================================ */
+    const esc = s => sb._esc ? sb._esc(s) : String(s || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    const $ = id => document.getElementById(id);
+    const clrSkel = id => $(id)?.querySelectorAll('[data-skel]').forEach(e => e.remove());
+
+    /* ── État ── */
+    const G = {
+      photos: [], baItems: [], videos: [],
+      lbItems: [], lbIdx: 0,
+      baLoaded: false, vidLoaded: false,
+      photosStatic: [
+        { photo_url: 'images/locks1.jpg', categorie: 'locks', titre: 'Création Locks' },
+        { photo_url: 'images/locks2.jpg', categorie: 'crochet', titre: 'Crochet Instantané' },
+        { photo_url: 'images/locks3.jpg', categorie: 'locks', titre: 'Locks Naturels' },
+        { photo_url: 'images/locks4.jpg', categorie: 'sisterlocks', titre: 'Sisterlocks' },
+        { photo_url: 'images/locks5.jpg', categorie: 'entretien', titre: 'Soin & Entretien' },
+        { photo_url: 'images/locks6.jpg', categorie: 'teinture', titre: 'Teinture & Coloration' }
+      ],
+      baStatic: [
+        { av: 'images/avant1.jpg', ap: 'images/apres1.jpg', cat: 'crochet', t: 'Crochet locks' },
+        { av: 'images/avant2.jpg', ap: 'images/apres2.jpg', cat: 'sisterlocks', t: 'Sisterlocks' },
+        { av: 'images/avant3.jpg', ap: 'images/apres3.jpg', cat: 'entretien', t: 'Entretien' },
+        { av: 'images/avant4.jpg', ap: 'images/apres4.jpg', cat: 'teinture', t: 'Teinture' },
+        { av: 'images/avant5.jpg', ap: 'images/apres5.jpg', cat: 'locks', t: 'Création locks' },
+        { av: 'images/avant6.jpg', ap: 'images/apres6.jpg', cat: 'locks', t: 'Locks naturels' },
+        { av: 'images/avant7.jpg', ap: 'images/apres7.jpg', cat: 'crochet', t: 'Crochet instantané' },
+        { av: 'images/avant8.jpg', ap: 'images/apres8.jpg', cat: 'sisterlocks', t: 'Sisterlocks fines' },
+        { av: 'images/avant9.jpg', ap: 'images/apres9.jpg', cat: 'entretien', t: 'Resserrage' },
+        { av: 'images/avant10.webp', ap: 'images/apres10.jpg', cat: 'teinture', t: 'Coloration' },
+        { av: 'images/avant11.jpg', ap: 'images/apres11.jpg', cat: 'locks', t: 'Transformation' },
+        { av: 'images/avant12.jpg', ap: 'images/apres12.jpg', cat: 'crochet', t: 'Crochet coloré' },
+      ]
+    };
+
+    /* ── TABS ── */
+    document.querySelectorAll('.gallery-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.gallery-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false') });
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
+        $('panel-' + tab).classList.add('active');
+        if (tab === 'avant-apres' && !G.baLoaded) loadBA();
+        if (tab === 'videos' && !G.vidLoaded) loadVids();
+      });
+    });
+
+    /* Hash URL */
+    const hash = window.location.hash.replace('#', '');
+    if (['avant-apres', 'videos'].includes(hash)) document.querySelector(`[data-tab="${hash}"]`)?.click();
+
+    /* ── ONGLET 1 : RÉALISATIONS ── */
+    async function loadRealisations() {
+      let photos = [];
+      try {
+        photos = await sb.galerie.list(true);
+        if (photos?.length) localStorage.setItem('ml_galerie_cache', JSON.stringify(photos));
+      } catch {
+        const c = localStorage.getItem('ml_galerie_cache');
+        if (c) { photos = JSON.parse(c); $('offline-badge').style.display = 'inline-flex'; }
+      }
+      if (!photos || photos.length === 0) photos = [...G.photosStatic];
+      G.photos = photos;
+      clrSkel('gallery-grid');
+      $('cnt-r').textContent = G.photos.length;
+
+      /* Filtres dynamiques */
+      const cats = [...new Set(G.photos.map(p => p.categorie).filter(Boolean))];
+      const fEl = $('filters-r');
+      cats.forEach(cat => {
+        const b = document.createElement('button');
+        b.className = 'cat-btn'; b.dataset.cat = cat;
+        b.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        fEl.appendChild(b);
+      });
+      fEl.querySelectorAll('.cat-btn').forEach(b => b.addEventListener('click', () => {
+        fEl.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); renderR(b.dataset.cat);
+      }));
+      renderR('all');
+    }
+
+    function renderR(cat) {
+      const grid = $('gallery-grid');
+      const list = cat === 'all' ? G.photos : G.photos.filter(p => p.categorie === cat);
+      grid.innerHTML = '';
+      $('r-empty').style.display = list.length ? 'none' : 'block';
+      G.lbItems = list.map(p => ({ src: p.photo_url, alt: p.titre || 'Réalisation' }));
+      list.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item fade-in visible';
+        div.innerHTML = `
+        <img src="${esc(p.photo_url)}" alt="${esc(p.titre || 'Réalisation')}" loading="lazy" decoding="async" width="400" height="533">
+        <div class="gallery-overlay">
+          <span class="gallery-overlay-text"><i class="fas fa-expand"></i> Agrandir</span>
+          ${p.titre ? `<p style="color:#fff;font-size:.8rem;margin-top:.3rem">${esc(p.titre)}</p>` : ''}
+        </div>
+        <button class="share-btn" title="Partager" onclick="event.stopPropagation();window.sharePhoto?.('${esc(p.photo_url)}','${esc(p.titre || '')}')"><i class="fas fa-share-alt"></i></button>
+      `;
+        div.addEventListener('click', e => { if (!e.target.closest('.share-btn')) openLB(i); });
+        grid.appendChild(div);
+      });
+    }
+
+    /* ── ONGLET 2 : AVANT/APRÈS ── */
+    async function loadBA() {
+      G.baLoaded = true;
+      clrSkel('ba-grid');
+      let dbBA = [];
+      try {
+        const all = await sb.galerie.list(true);
+        dbBA = all.filter(p => ['avant-apres', 'transformation'].includes(p.categorie));
+      } catch { }
+      G.baItems = [...G.baStatic];
+      dbBA.forEach(p => {
+        if (p.photo_avant_url && p.photo_url) G.baItems.push({ av: p.photo_avant_url, ap: p.photo_url, cat: 'creation', t: p.titre || 'Transformation' });
+      });
+      $('cnt-ba').textContent = G.baItems.length;
+      renderBA('all');
+      $('filters-ba').querySelectorAll('.cat-btn').forEach(b => b.addEventListener('click', () => {
+        $('filters-ba').querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); renderBA(b.dataset.cat);
+      }));
+    }
+
+    function renderBA(cat) {
+      const grid = $('ba-grid');
+      const list = cat === 'all' ? G.baItems : G.baItems.filter(b => b.cat === cat);
+      grid.innerHTML = '';
+      list.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'ba-item-u fade-in visible';
+        div.title = 'Glissez pour comparer';
+        div.innerHTML = `
+        <img class="ba-b" src="${esc(item.av)}" alt="Avant — ${esc(item.t || '')}" loading="lazy">
+        <img class="ba-a" src="${esc(item.ap)}" alt="Après — ${esc(item.t || '')}" loading="lazy">
+        <div class="ba-div"></div>
+        <div class="ba-hdl"><i class="fas fa-arrows-left-right"></i></div>
+        <div class="ba-labs">
+          <span class="ba-lab" style="background:rgba(239,68,68,.8)">Avant</span>
+          <span class="ba-lab" style="background:rgba(16,185,129,.8)">Après</span>
+        </div>
+        ${item.t ? `<div class="ba-cap">${esc(item.t)}</div>` : ''}
+        <button class="ba-shr" title="Partager" onclick="event.stopPropagation();window.sharePhoto?.('${esc(item.ap)}','${esc(item.t || 'Transformation Miralocks')}')"><i class="fas fa-share-alt"></i></button>
+      `;
+        div.addEventListener('click', e => { if (!e.target.closest('.ba-shr')) openBALB(item); });
+        initSlider(div);
+        grid.appendChild(div);
+      });
+    }
+
+    function initSlider(item) {
+      const b = item.querySelector('.ba-b'), a = item.querySelector('.ba-a');
+      const div = item.querySelector('.ba-div'), hdl = item.querySelector('.ba-hdl');
+      if (!b || !a) return;
+      let pct = 50, drag = false, rect = null;
+      window.addEventListener('resize', () => { rect = null }, { passive: true });
+      function apply(p) {
+        pct = Math.max(2, Math.min(98, p));
+        b.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+        a.style.clipPath = `inset(0 0 0 ${pct}%)`;
+        if (div) div.style.left = pct + '%';
+        if (hdl) hdl.style.left = pct + '%';
+      }
+      function getP(cx) { if (!rect) rect = item.getBoundingClientRect(); return ((cx - rect.left) / rect.width) * 100; }
+      apply(50);
+      item.addEventListener('mousedown', e => { drag = true; apply(getP(e.clientX)); e.preventDefault() });
+      document.addEventListener('mousemove', e => { if (drag) apply(getP(e.clientX)) });
+      document.addEventListener('mouseup', () => { drag = false });
+      let sx, sp, ih = null;
+      item.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sp = pct; ih = null }, { passive: true });
+      item.addEventListener('touchmove', e => {
+        const dx = e.touches[0].clientX - sx;
+        if (ih === null) ih = Math.abs(dx) > 8;
+        if (!ih) return;
+        e.preventDefault();
+        if (!rect) rect = item.getBoundingClientRect();
+        apply(sp + (dx / rect.width) * 100);
+      }, { passive: false });
+    }
+
+    /* ── ONGLET 3 : VIDÉOS ── */
+    async function loadVids() {
+      G.vidLoaded = true;
+      let vids = [];
+      try {
+        vids = await sb2.videos.list(true);
+        if (vids?.length) localStorage.setItem('ml_videos_cache', JSON.stringify(vids));
+      } catch {
+        const c = localStorage.getItem('ml_videos_cache');
+        if (c) { vids = JSON.parse(c); $('offline-badge').style.display = 'inline-flex'; }
+      }
+      G.videos = vids || [];
+      clrSkel('videos-grid');
+      $('cnt-v').textContent = G.videos.length;
+      if (!G.videos.length) { $('v-empty').style.display = 'block'; return; }
+      const grid = $('videos-grid');
+      G.videos.forEach(v => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item fade-in visible';
+        div.style.cursor = 'pointer';
+        div.innerHTML = `
+        ${v.thumbnail_url ? `<img src="${esc(v.thumbnail_url)}" alt="${esc(v.titre)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#0C3320,#1B6B45);display:flex;align-items:center;justify-content:center"><i class="fas fa-film" style="font-size:3rem;color:rgba(255,255,255,.3)"></i></div>`}
+        <div class="gallery-overlay" style="background:rgba(0,0,0,.45)">
+          <div style="text-align:center;width:100%">
+            <i class="fas fa-play-circle" style="font-size:3rem;color:#fff;display:block;margin-bottom:.5rem"></i>
+            <p style="color:#fff;font-size:.85rem;font-weight:600;margin:0">${esc(v.titre)}</p>
+          </div>
+        </div>
+      `;
+        div.addEventListener('click', () => playVid(v.video_url, v.titre));
+        grid.appendChild(div);
+      });
+    }
+
+    /* ── LIGHTBOX PHOTOS ── */
+    function openLB(idx) {
+      const lb = $('lightbox');
+      const img = lb.querySelector('.lightbox-img');
+      lb.querySelector('.lightbox-video-wrap').style.display = 'none';
+      $('lb-ba-wrap').style.display = 'none';
+      img.style.display = 'block';
+      lb.querySelectorAll('.lightbox-prev,.lightbox-next').forEach(b => b.style.display = '');
+      G.lbIdx = idx;
+      img.src = G.lbItems[idx]?.src || '';
+      img.alt = G.lbItems[idx]?.alt || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function navLB(d) {
+      G.lbIdx = (G.lbIdx + d + G.lbItems.length) % G.lbItems.length;
+      const img = $('lightbox').querySelector('.lightbox-img');
+      img.style.opacity = '0';
+      setTimeout(() => { img.src = G.lbItems[G.lbIdx]?.src || ''; img.style.opacity = '1'; }, 150);
+    }
+
+    /* ── LIGHTBOX AVANT/APRÈS côte à côte ── */
+    function openBALB(item) {
+      const lb = $('lightbox');
+      lb.querySelector('.lightbox-img').style.display = 'none';
+      lb.querySelector('.lightbox-video-wrap').style.display = 'none';
+      lb.querySelectorAll('.lightbox-prev,.lightbox-next').forEach(b => b.style.display = 'none');
+      const wrap = $('lb-ba-wrap');
+      wrap.style.cssText = 'display:flex;justify-content:center;align-items:center;padding:1rem;width:100%;position:relative';
+      wrap.innerHTML = `
+      <div class="lb-ba">
+        <div class="lb-ba-side">
+          <img src="${esc(item.av)}" alt="Avant">
+          <div class="lb-ba-lbl" style="background:rgba(239,68,68,.1);color:#ef4444">⬅ AVANT</div>
+        </div>
+        <div class="lb-ba-side">
+          <img src="${esc(item.ap)}" alt="Après">
+          <div class="lb-ba-lbl" style="background:rgba(16,185,129,.1);color:#059669">APRÈS ➡</div>
+        </div>
+      </div>
+      ${item.t ? `<div style="position:absolute;top:0;left:50%;transform:translateX(-50%);background:rgba(12,51,32,.85);color:var(--or,#C9A84C);padding:.35rem 1rem;border-radius:0 0 12px 12px;font-size:.82rem;font-weight:700">${esc(item.t)}</div>` : ''}
+    `;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    /* ── LIGHTBOX VIDÉO ── */
+    function getEmbed(url) {
+      if (!url) return null;
+      if (url.includes('youtube.com/watch?v=')) return `https://www.youtube.com/embed/${url.split('v=')[1].split('&')[0]}?autoplay=1`;
+      if (url.includes('youtu.be/')) return `https://www.youtube.com/embed/${url.split('youtu.be/')[1].split('?')[0]}?autoplay=1`;
+      if (url.includes('tiktok.com')) { const p = url.split('/video/'); return p.length > 1 ? `https://www.tiktok.com/embed/v2/${p[1].split('?')[0]}` : null; }
+      if (url.includes('instagram.com')) return `${url.split('?')[0].replace(/\/$/, '')}/embed/`;
+      return null;
+    }
+    function playVid(url, titre) {
+      const lb = $('lightbox');
+      lb.querySelector('.lightbox-img').style.display = 'none';
+      $('lb-ba-wrap').style.display = 'none';
+      lb.querySelectorAll('.lightbox-prev,.lightbox-next').forEach(b => b.style.display = 'none');
+      const vw = lb.querySelector('.lightbox-video-wrap');
+      vw.style.cssText = 'display:flex;justify-content:center;align-items:center;width:100%';
+      const embed = getEmbed(url);
+      vw.innerHTML = embed
+        ? `<div style="width:min(95vw,800px);padding:0 .5rem"><p style="color:var(--or);text-align:center;margin-bottom:1rem;font-weight:600">${esc(titre)}</p><div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000"><iframe src="${embed}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="autoplay;encrypted-media;fullscreen" allowfullscreen></iframe></div></div>`
+        : `<div style="width:min(95vw,800px);padding:0 .5rem"><p style="color:var(--or);text-align:center;margin-bottom:1rem;font-weight:600">${esc(titre)}</p><video src="${esc(url)}" controls autoplay playsinline style="width:100%;border-radius:8px;max-height:75vh"></video></div>`;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    /* ── Fermer lightbox ── */
+    function closeLB() {
+      const lb = $('lightbox');
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      lb.querySelector('.lightbox-video-wrap').innerHTML = '';
+      lb.querySelector('.lightbox-video-wrap').style.display = 'none';
+      $('lb-ba-wrap').style.display = 'none';
+      lb.querySelector('.lightbox-img').style.display = 'block';
+      lb.querySelectorAll('.lightbox-prev,.lightbox-next').forEach(b => b.style.display = '');
+    }
+
+    /* ── Événements lightbox ── */
+    $('lightbox').querySelector('.lightbox-close').onclick = closeLB;
+    $('lightbox').querySelector('.lightbox-prev').onclick = e => { e.stopPropagation(); navLB(-1) };
+    $('lightbox').querySelector('.lightbox-next').onclick = e => { e.stopPropagation(); navLB(1) };
+    $('lightbox').onclick = e => { if (e.target === $('lightbox')) closeLB() };
+    document.addEventListener('keydown', e => {
+      if (!$('lightbox').classList.contains('open')) return;
+      if (e.key === 'Escape') closeLB();
+      if (e.key === 'ArrowLeft') navLB(-1);
+      if (e.key === 'ArrowRight') navLB(1);
+    });
+    /* Swipe tactile lightbox */
+    let lbTx = 0;
+    $('lightbox').addEventListener('touchstart', e => { lbTx = e.touches[0].clientX }, { passive: true });
+    $('lightbox').addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - lbTx; if (Math.abs(dx) > 50) navLB(dx < 0 ? 1 : -1) });
+
+    /* ── INIT ── */
+    document.addEventListener('DOMContentLoaded', loadRealisations);
+  </script>
+
+  <script src="js/main.js?v=b63c9d13" defer></script>
+  <script src="js/admin-communication.js?v=f9b248b0"></script>
+  <script src="js/register-sw.js?v=3b3e54eb" defer></script>
+  <script src="js/lang.js?v=4f1c19d0" defer></script>
+  <script src="js/animations.js?v=b8ef081e"></script>
+  <script src="js/seo-advanced.js?v=06ae984c"></script>
+  <script src="js/public-features.js?v=29c11b3b"></script>
+  <script src="js/admin-communication.js?v=f9b248b0"></script>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport Technique - Site Miralocks</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --vert: #0C3320;
+            --or: #C9A84C;
+            --gris: #f8f9fa;
+            --texte: #333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--texte); background: #eee; margin: 0; padding: 2rem; }
+        .page { max-width: 900px; margin: 0 auto; background: #fff; padding: 3rem; box-shadow: 0 0 20px rgba(0,0,0,0.1); border-radius: 8px; }
+        header { border-bottom: 3px solid var(--vert); padding-bottom: 1rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        h1 { color: var(--vert); margin: 0; font-size: 2rem; }
+        h2 { color: var(--vert); border-left: 5px solid var(--or); padding-left: 1rem; margin-top: 2rem; font-size: 1.5rem; }
+        h3 { color: var(--or); margin-top: 1.5rem; }
+        .badge { display: inline-block; padding: 4px 12px; background: var(--vert); color: #fff; border-radius: 20px; font-size: 0.8rem; margin-right: 5px; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+        .feature-card { border: 1px solid #ddd; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; background: var(--gris); }
+        .footer { margin-top: 3rem; font-size: 0.9rem; text-align: center; color: #777; border-top: 1px solid #eee; padding-top: 1rem; }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .page { box-shadow: none; max-width: 100%; border-radius: 0; }
+            .no-print { display: none; }
+        }
+        .btn-print { background: var(--or); color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; margin-bottom: 1rem; float: right; }
+        .btn-print:hover { background: var(--vert); }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <button class="btn-print no-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimer en PDF</button>
+        <header>
+            <div>
+                <h1>RAPPORT TECHNIQUE</h1>
+                <p>Projet : <strong>Institut Miralocks</strong> — Plateforme Digitale</p>
+            </div>
+            <div style="text-align:right">
+                <p>Date : 03 Avril 2026</p>
+                <p>Version : 6.5 (Final)</p>
+            </div>
+        </header>
+
+        <section>
+            <h2>1. Présentation Générale</h2>
+            <p>Le site Miralocks est une plateforme web moderne conçue pour la gestion complète d'un institut capillaire spécialisé. Elle combine une vitrine marketing esthétique avec un panneau d'administration puissant et sécurisé.</p>
+            <div class="tech-stack">
+                <span class="badge">Vanilla HTML5/CSS3/JS</span>
+                <span class="badge">Supabase (PostgreSQL)</span>
+                <span class="badge">Google Analytics 4</span>
+                <span class="badge">Looker Studio</span>
+                <span class="badge">Edge Functions</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Architecture Système</h2>
+            <h3>A. Frontend (Côté Client)</h3>
+            <p>Le site est construit sans framework lourd (React/Vue) pour garantir une rapidité absolue et un référencement naturel (SEO) optimal. Le fichier <code>main.js</code> pilote les interactions légères, tandis que <code>supabase.js</code> centralise toutes les communications avec la base de données.</p>
+            
+            <h3>B. Backend (Côté Serveur)</h3>
+            <p>La puissance du site repose sur <strong>Supabase</strong>, qui gère :</p>
+            <ul>
+                <li><strong>Base de données</strong> : Stockage des rendez-vous, articles, photos et logs.</li>
+                <li><strong>Authentification</strong> : Accès sécurisé à l'administration par email/mot de passe.</li>
+                <li><strong>Storage</strong> : Hébergement des photos envoyées par les clients lors des réservations.</li>
+                <li><strong>Edge Functions</strong> : Envoi automatique des emails de confirmation et rappels WhatsApp.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Modules Principaux</h2>
+            <div class="feature-card">
+                <h3><i class="fas fa-calendar-check"></i> Système de Rendez-vous</h3>
+                <p>Le client choisit une prestation, une date et peut joindre une photo de ses cheveux. Une fois soumis, le rendez-vous apparaît dans le planning admin. Un email de confirmation est envoyé automatiquement et une notification arrive sur l'admin.</p>
+            </div>
+            <div class="feature-card">
+                <h3><i class="fas fa-edit"></i> Panneau d'Administration</h3>
+                <p>Un tableau de bord complet permettant de :</p>
+                <ul>
+                    <li>Gérer les articles de Blog, la Galerie Photos et les Vidéos.</li>
+                    <li>Modérer les avis clients.</li>
+                    <li>Visualiser le trafic réel via l'intégration <strong>Looker Studio</strong>.</li>
+                    <li>Consulter l'historique complet des actions et des connexions.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3><i class="fas fa-shield-alt"></i> Sécurité Renforcée</h3>
+                <p>Chaque connexion admin est tracée (Adresse IP + Type d'appareil). Les tentatives de "forcer" le mot de passe sont enregistrées et signalées en rouge dans l'historique pour prévenir toute intrusion.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. Fonctionnalités Spéciales</h2>
+            <h3>A. Traduction Multilingue</h3>
+            <p>Le site utilise Google Translate via <code>js/lang.js</code>. Un script personnalisé "masque" les logos et éléments publicitaires de Google pour préserver l'élégance du site tout en offrant la traduction instantanée.</p>
+            
+            <h3>B. Statistiques & Analytics</h3>
+            <p>Plus de statistiques "maison" lourdes. Le site est relié à <strong>Google Analytics 4</strong>. Le rapport visuel est intégré dans l'admin via une iframe Google Looker Studio pour une lecture simple et claire.</p>
+        </section>
+
+        <section>
+            <h2>5. Maintenance & Évolutivité</h2>
+            <p>Le site est conçu pour être "stateless". Toutes les ressources sont sur Supabase. Pour mettre à jour une prestation ou un prix, l'administrateur utilise simplement l'onglet "Prestations" dans son panneau de contrôle.</p>
+        </section>
+
+        <div class="footer">
+            <p>Rapport généré automatiquement pour Institut Miralocks — © 2026. Tous droits réservés.</p>
+        </div>
+    </div>
+</body>
+</html>
